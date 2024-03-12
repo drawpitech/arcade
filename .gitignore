@@ -1,0 +1,28 @@
+# Binaries
+*.out
+nanotekspice
+unit_tests
+asan
+prof
+
+# Compilation
+.build/
+build/
+*.a
+*.o
+
+# Editors junk
+*~
+\#*#
+*.swp
+*.swo
+
+# Reports
+core.*
+*.log
+*.gcda
+*.gcno
+
+*.json
+.vs*
+.cache
