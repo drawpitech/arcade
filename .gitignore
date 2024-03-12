@@ -10,6 +10,8 @@ prof
 build/
 *.a
 *.o
+CMakeFiles/
+result
 
 # Editors junk
 *~
