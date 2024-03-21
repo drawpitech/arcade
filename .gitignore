@@ -1,17 +1,24 @@
 # Binaries
 *.out
-nanotekspice
-unit_tests
-asan
-prof
+/arcade
 
 # Compilation
 .build/
 build/
 *.a
 *.o
-CMakeFiles/
 result
+
+# Your average CMake junk
+CMakeFiles/
+cmake_*
+Makefile
+CMakeCache.txt
+CMakeDoxygen*
+CMakeDoxyfile.in
+
+# Documentation
+ASS-doc.pdf
 
 # Editors junk
 *~

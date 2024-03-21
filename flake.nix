@@ -1,51 +1,62 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        cc = pkgs.gcc12;
-      in
-      {
-        devShells.default = pkgs.mkShell {
-          packages = [ cc ] ++ (with pkgs; [
-            libcxx
-            gnumake
+  outputs = {self, ...} @ inputs:
+    inputs.utils.lib.eachDefaultSystem (system: let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+    in rec {
+      devShells.default = pkgs.mkShell {
+        packages =
+          (with pkgs; [
+            texliveFull
+
             criterion
-            gcovr
-            ltrace
-            valgrind
-            bear
-            gdb
             gtest
-            cmake
-            ninja
-            doxygen_gui
-          ]);
+            gcovr
+
+            valgrind
+            gdb
+            bear
+          ])
+          ++ (
+            builtins.concatMap
+            (p: p.buildInputs ++ p.nativeBuildInputs)
+            (builtins.attrValues packages)
+          );
+      };
+
+      formatter = pkgs.alejandra;
+
+      packages = {
+        default = packages.arcade;
+        arcade = pkgs.stdenv.mkDerivation rec {
+          name = "arcade";
+          src = ./.;
+          nativeBuildInputs = with pkgs; [cmake];
+          installPhase = ''
+            mkdir -p $out/bin
+            cp ${name} $out/bin
+          '';
         };
 
-        formatter = pkgs.nixpkgs-fmt;
+        doc = pkgs.stdenv.mkDerivation {
+          name = "doc";
+          src = ./.;
+          buildInputs = with pkgs; [doxygen_gui];
+          buildPhase = ''
+            doxygen
+          '';
+          installPhase = ''
+            mkdir -p $out
+            cp -r doc/html $out
 
-        packages = {
-          doc = pkgs.stdenv.mkDerivation {
-            name = "doc";
-            src = ./.;
-            buildInputs = [ pkgs.doxygen ];
-            buildPhase = ''
-              doxygen
-            '';
-            installPhase = ''
-              mkdir -p $out
-              cp -r doc/html $out
-
-              mkdir -p $out/usr/share
-              cp -r doc/man $out/usr/share
-            '';
-          };
+            mkdir -p $out/usr/share
+            cp -r doc/man $out/usr/share
+          '';
         };
-      });
+      };
+    });
 }
