@@ -27,7 +27,7 @@ class IEngine {
 public:
     class Exception: public std::exception {};
 
-    virtual ~IEngine() = 0;
+    virtual ~IEngine() = default;
 
     virtual void refresh() = 0;
 

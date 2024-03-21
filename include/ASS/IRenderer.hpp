@@ -13,6 +13,7 @@
 
 #pragma once
 #include <optional>
+#include "ISprite.hpp"
 
 /**
  * @brief Arcade Standard Specifications
@@ -33,7 +34,7 @@ public:
 
     class Exception: public std::exception {};
 
-    virtual ~IRenderer() = 0;
+    virtual ~IRenderer() = default;
 
     virtual void start() = 0;
 
@@ -48,4 +49,4 @@ public:
 
 } // ASS
 
-std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint();
+extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint();

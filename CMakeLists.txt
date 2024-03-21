@@ -15,6 +15,4 @@ endif ()
 add_library(ass INTERFACE)
 target_include_directories(ass INTERFACE include)
 
-target_compile_features(ass INTERFACE cxx_std_20)
-
 include(cmake/MakeDoc.cmake)
