@@ -13,7 +13,6 @@ if (DOXYGEN_FOUND)
     set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     doxygen_add_docs(doc
             ${CMAKE_CURRENT_SOURCE_DIR}/include
-            ALL
     )
     add_custom_command(TARGET doc
             POST_BUILD

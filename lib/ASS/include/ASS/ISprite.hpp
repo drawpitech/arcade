@@ -50,7 +50,7 @@ struct SpriteAssets {
 
 class ISprite {
 public:
-    virtual ~ISprite() = 0;
+    virtual ~ISprite() = default;
 
     virtual void set_asset(SpriteAssets asset);
 

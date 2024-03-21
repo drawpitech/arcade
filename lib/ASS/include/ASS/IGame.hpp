@@ -21,7 +21,7 @@ namespace ass {
  */
 class IGame {
 public:
-    virtual ~IGame() = 0;
+    virtual ~IGame() = default;
 
     class Exception: public std::exception {};
 
@@ -34,4 +34,4 @@ public:
 
 } // ASS
 
-std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint();
+extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint();
