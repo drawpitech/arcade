@@ -8,26 +8,28 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <list>
+#include <memory>
 #include <string>
 #include <utility>
+
+#include "ASS/IGame.hpp"
 
 namespace gg {
 
 using arg_t = std::uint16_t;
+using entrypoint_t = ass::IGame *(*)();
 
 /**
  * Main class of the arcade
+ * The loader of games
  */
 class Arcade
 {
    public:
-    /**
-     * Take the arguments directly from the main function
-     * @param argc The number of arguments
-     * @param argv The arguments
-     */
     Arcade(int argc, char **argv);
+    ~Arcade();
 
     /**
      * Run the arcade
@@ -35,10 +37,12 @@ class Arcade
     int run();
 
    private:
-    std::string _gamepath;
     arg_t _args;
+    void *_handle;
+    std::unique_ptr<ass::IGame> _game;
 
-    void print_help();
+    std::string loadArgs(int argc, char **argv);
+    static void printHelp();
 };
 
 class Arg

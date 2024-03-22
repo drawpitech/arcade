@@ -3,6 +3,8 @@ add_executable(arcade ${sources})
 
 target_compile_features(arcade PUBLIC cxx_std_20)
 
+target_link_libraries(arcade ass)
+
 set_target_properties(
   arcade
   PROPERTIES PREFIX "../"

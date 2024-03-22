@@ -9,6 +9,11 @@
 
 #include <ASS/IGame.hpp>
 
+extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
+{
+    return new Snake();
+}
+
 void Snake::start()
 {
     // start

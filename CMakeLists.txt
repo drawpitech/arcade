@@ -9,11 +9,11 @@ project(
   LANGUAGES CXX
   VERSION 0.1.0)
 
-# ↓ arcade binary
-add_subdirectory(Arcade)
-
 # ↓ ASS library
 add_subdirectory(lib/ASS)
+
+# ↓ arcade binary
+add_subdirectory(Arcade)
 
 # ↓ Games
 add_subdirectory(Games/snake)

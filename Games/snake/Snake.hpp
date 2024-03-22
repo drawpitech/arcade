@@ -9,7 +9,7 @@
 
 #include <ASS/IGame.hpp>
 
-class Snake : ass::IGame
+class Snake : public ass::IGame
 {
     void start() final;
 
