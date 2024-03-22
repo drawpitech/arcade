@@ -11,7 +11,7 @@
       devShells.default = pkgs.mkShell {
         packages =
           (with pkgs; [
-            texliveFull
+            doxygen_gui
 
             criterion
             gtest
@@ -45,16 +45,17 @@
         doc = pkgs.stdenv.mkDerivation {
           name = "doc";
           src = ./.;
-          buildInputs = with pkgs; [doxygen_gui];
+          buildInputs =
+            packages.arcade.nativeBuildInputs
+            ++ (with pkgs; [doxygen texliveFull]);
+
           buildPhase = ''
-            doxygen
+            cmake .
+            make doc
           '';
           installPhase = ''
-            mkdir -p $out
-            cp -r doc/html $out
-
-            mkdir -p $out/usr/share
-            cp -r doc/man $out/usr/share
+            mkdir -p $out/var/www
+            cp -r doc/html $out/var/www
           '';
         };
       };
