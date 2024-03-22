@@ -9,11 +9,11 @@ project(
   LANGUAGES CXX
   VERSION 0.1.0)
 
+# ↓ arcade binary
+add_subdirectory(Arcade)
+
 # ↓ ASS library
 add_subdirectory(lib/ASS)
 
-# ↓ arcade binary
-set(CMAKE_CXX_STANDARD 20)
-file(GLOB_RECURSE sources "Arcade/*.cpp")
-add_executable(arcade ${sources})
-target_link_libraries(arcade ass)
+# ↓ Games
+add_subdirectory(Games/snake)
