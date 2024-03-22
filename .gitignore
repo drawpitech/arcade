@@ -6,10 +6,13 @@
 .build/
 build/
 *.a
+*.so
 *.o
+*.d
 result
 
 # Your average CMake junk
+.cmake
 CMakeFiles/
 cmake_*
 Makefile
