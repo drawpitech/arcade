@@ -51,7 +51,7 @@ std::string gg::Arcade::loadArgs(int argc, char **argv)
         if (arg.at(0) != '-') {
             if (!gamepath.empty())
                 throw gg::Exception("Too many arguments");
-            gamepath = arg;
+            gamepath = std::move(arg);
             continue;
         }
 
@@ -60,24 +60,25 @@ std::string gg::Arcade::loadArgs(int argc, char **argv)
             std::string name = arg.substr(2);
             bool found = false;
 
-            for (const auto &argpair : ARGS) {
-                if (argpair.name == name) {
-                    _args |= argpair.arg;
+            for (const auto &a : ARGS) {
+                if (!a.name.empty() && a.name == name) {
+                    _args |= a.arg;
                     found = true;
                     break;
                 }
             }
             if (!found)
                 throw gg::Exception("Unknown argument: --" + name);
+            continue;
         }
 
         // Short arguments
         for (const auto &c : arg.substr(1)) {
             bool found = false;
 
-            for (const auto &argpair : ARGS) {
-                if (argpair.c == c) {
-                    _args |= argpair.arg;
+            for (const auto &a : ARGS) {
+                if (a.c != '\0' && a.c == c) {
+                    _args |= a.arg;
                     found = true;
                     break;
                 }
