@@ -2,10 +2,12 @@
 ** EPITECH PROJECT, 2024
 ** ASS
 ** File description:
-** Sprite.hpp
+** ISprite.hpp
 */
 
 #pragma once
+
+#include <sys/types.h>
 #include <vector>
 
 #include "Vector2.hpp"
@@ -48,7 +50,7 @@ struct SpriteAssets {
     image_sprite_t image;
 };
 
-class ISprite {
+class ISprite { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     virtual ~ISprite() = default;
 
@@ -59,4 +61,4 @@ public:
 
     virtual void draw() = 0;
 };
-}
+} // namespace ass

@@ -12,6 +12,7 @@ if (DOXYGEN_FOUND)
     set(DOXYGEN_FULL_SIDEBAR NO)
     set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     doxygen_add_docs(doc
+            mainpage.md
             ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
     add_custom_command(TARGET doc
