@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <sys/types.h>
+
 enum class EventKey: u_int8_t {
     A = 1,
     B,

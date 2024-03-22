@@ -12,7 +12,9 @@
  */
 
 #pragma once
-#include <optional>
+
+#include <string>
+
 #include "ISprite.hpp"
 
 /**
@@ -26,7 +28,7 @@ namespace ass {
  * @brief Renderer Interface
  * @details Set of method to implement for the Renderer part of the Arcade project
  */
-class IRenderer {
+class IRenderer { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     struct Properties {
         std::wstring title;
@@ -47,6 +49,6 @@ public:
     virtual void set_title(std::wstring title) = 0;
 };
 
-} // ASS
+} // namespace ass
 
 extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint();

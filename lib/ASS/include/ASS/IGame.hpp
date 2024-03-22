@@ -11,7 +11,8 @@
  * @brief File declaring IGame Interface
  */
 #pragma once
-#include <memory>
+
+#include <exception>
 
 namespace ass {
 
@@ -19,7 +20,7 @@ namespace ass {
  * @brief Game Interface
  * @details Set of method to implement for the Game part of the Arcade project
  */
-class IGame {
+class IGame { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     virtual ~IGame() = default;
 
@@ -32,6 +33,6 @@ public:
     virtual void stop() = 0;
 };
 
-} // ASS
+} // namespace ass
 
 extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint();

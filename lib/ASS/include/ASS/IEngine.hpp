@@ -12,7 +12,7 @@
  */
 
 #pragma once
-#include <functional>
+
 #include <string>
 
 #include "Events.hpp"
@@ -23,7 +23,7 @@ namespace ass {
  * @brief Engine Interface
  * @details Set of method to implement for the business logic of the Arcade project
  */
-class IEngine {
+class IEngine { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     class Exception: public std::exception {};
 
@@ -39,4 +39,4 @@ public:
 
     virtual std::vector<Event> events() = 0;
 };
-} // ASS
+} // namespace ass
