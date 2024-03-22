@@ -8,6 +8,7 @@
 #include "Snake.hpp"
 
 #include <ASS/IGame.hpp>
+#include <iostream>
 
 extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
 {
@@ -16,15 +17,15 @@ extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
 
 void Snake::start()
 {
-    // start
+    std::clog << "Start snake game." << std::endl;
 }
 
 void Snake::run()
 {
-    // run
+    std::clog << "Run   snake game." << std::endl;
 }
 
 void Snake::stop()
 {
-    // stop
+    std::clog << "Stop  snake game." << std::endl;
 }

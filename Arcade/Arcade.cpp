@@ -110,5 +110,8 @@ void gg::Arcade::printHelp()
 
 int gg::Arcade::run()
 {
+    _game->start();
+    _game->run();
+    _game->stop();
     return 0;
 }
