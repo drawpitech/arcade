@@ -35,7 +35,12 @@
         arcade = pkgs.stdenv.mkDerivation rec {
           name = "arcade";
           src = ./.;
-          nativeBuildInputs = with pkgs; [cmake];
+          nativeBuildInputs = with pkgs; [
+            cmake
+            pkg-config
+            ncurses
+            sfml
+          ];
           installPhase = ''
             mkdir -p $out/bin
             cp ${name} $out/bin
