@@ -1,5 +1,5 @@
 set(TARGET arcade_snake)
-include(../CMakeCommon.txt)
+include(../../CMakeCommonLib.txt)
 
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
