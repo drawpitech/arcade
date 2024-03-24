@@ -14,6 +14,8 @@
 
 #include <exception>
 
+#include "IEngine.hpp"
+
 namespace ass {
 
 /**
@@ -26,7 +28,7 @@ public:
 
     class Exception: public std::exception {};
 
-    virtual void start() = 0;
+    virtual void start(ass::IEngine *engine) = 0;
 
     virtual void run() = 0;
 

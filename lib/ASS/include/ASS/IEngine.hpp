@@ -15,6 +15,7 @@
 
 #include <string>
 
+#include "IRenderer.hpp"
 #include "Events.hpp"
 #include "ISprite.hpp"
 
@@ -38,5 +39,8 @@ public:
     virtual void set_title(std::wstring title) = 0;
 
     virtual std::vector<Event> events() = 0;
+
+    virtual void set_renderer(ass::IRenderer *renderer) = 0;
+    virtual ass::IRenderer *get_renderer() = 0;
 };
 } // namespace ass
