@@ -11,8 +11,11 @@
 
 #include <ASS/IGame.hpp>
 #include <iostream>
+#include <memory>
 #include <span>
 
+#include "Engine.hpp"
+#include "Entrypoint.hpp"
 #include "Exception.hpp"
 
 gg::Arcade::Arcade(int argc, char **argv) : _args(0)
@@ -21,23 +24,14 @@ gg::Arcade::Arcade(int argc, char **argv) : _args(0)
     if (gamepath.empty())
         throw gg::Exception("No game path provided");
 
-    // Get entrypoint
-    _handle = dlopen(gamepath.c_str(), RTLD_LAZY);
-    if (_handle == nullptr)
-        throw gg::Exception(dlerror());
-    void *entrypoint = dlsym(_handle, "uwu_goofy_ahhh_game_entrypoint");
-    if (entrypoint == nullptr)
-        throw gg::Exception(dlerror());
-    _game.reset(reinterpret_cast<entrypoint_t>(entrypoint)());
+    std::string rendererpath = "./lib/arcade_ncurses.so";
+    _game = std::make_unique<gg::Entrypoint<ass::IGame>>(
+        gamepath, "uwu_goofy_ahhh_game_entrypoint");
+    _renderer = std::make_unique<gg::Entrypoint<ass::IRenderer>>(
+        rendererpath, "uwu_goofy_ahhh_renderer_entrypoint");
 }
 
-gg::Arcade::~Arcade()
-{
-    _game.reset(nullptr);
-    // explicitly free the pointer, because we close the handle later,
-    // and we lost the pointer and cannot free the memory later
-    dlclose(_handle);
-}
+gg::Arcade::~Arcade() = default;
 
 std::string gg::Arcade::loadArgs(int argc, char **argv)
 {
@@ -111,8 +105,14 @@ void gg::Arcade::printHelp()
 
 int gg::Arcade::run()
 {
-    _game->start();
-    _game->run();
-    _game->stop();
+    auto *game = _game->get();
+    auto *renderer = _renderer->get();
+    gg::Engine engine;
+    engine.set_renderer(renderer);
+
+    game->start(&engine);
+    game->run();
+    game->stop();
+    delete game;
     return 0;
 }

@@ -8,18 +8,17 @@
 #pragma once
 
 #include <cstdint>
-#include <functional>
 #include <list>
 #include <memory>
 #include <string>
 #include <utility>
 
 #include "ASS/IGame.hpp"
+#include "Entrypoint.hpp"
 
 namespace gg {
 
 using arg_t = std::uint16_t;
-using entrypoint_t = ass::IGame *(*)();
 
 /**
  * Main class of the arcade
@@ -38,8 +37,8 @@ class Arcade
 
    private:
     arg_t _args;
-    void *_handle;
-    std::unique_ptr<ass::IGame> _game;
+    std::unique_ptr<gg::Entrypoint<ass::IGame>> _game;
+    std::unique_ptr<gg::Entrypoint<ass::IRenderer>> _renderer;
 
     std::string loadArgs(int argc, char **argv);
     static void printHelp();
