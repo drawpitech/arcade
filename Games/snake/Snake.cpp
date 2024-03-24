@@ -20,15 +20,11 @@ extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
     return new Snake();
 }
 
-void Snake::start()
+void Snake::start(ass::IEngine *engine)
 {
+    _engine = engine;
     std::clog << "Start snake game." << std::endl;
-    initscr();
-    cbreak();
-    noecho();
-    curs_set(0);
-    nodelay(stdscr, TRUE);
-    keypad(stdscr, TRUE);
+    _engine->get_renderer()->start();
     std::srand(std::time(nullptr));
 }
 
@@ -120,6 +116,5 @@ void Snake::run()
 void Snake::stop()
 {
     std::clog << "Stop  snake game." << std::endl;
-    delwin(stdscr);
-    endwin();
+    _engine->get_renderer()->stop();
 }

@@ -17,3 +17,6 @@ add_subdirectory(Arcade)
 
 # ↓ Games
 add_subdirectory(Games/snake)
+
+# ↓ Renderer
+add_subdirectory(Renderer/NCurses)

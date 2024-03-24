@@ -7,13 +7,16 @@
 
 #pragma once
 
+#include <ASS/IEngine.hpp>
 #include <ASS/IGame.hpp>
 
 class Snake : public ass::IGame
 {
-    void start() final;
-
+   public:
+    void start(ass::IEngine *engine) final;
     void run() final;
-
     void stop() final;
+
+   private:
+    ass::IEngine *_engine;
 };
