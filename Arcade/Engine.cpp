@@ -5,8 +5,6 @@
 ** Engine
 */
 
-#pragma once
-
 #include "Engine.hpp"
 
 gg::Engine::Engine() = default;

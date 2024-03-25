@@ -44,6 +44,9 @@
           installPhase = ''
             mkdir -p $out/bin
             cp ${name} $out/bin
+
+            mkdir -p $out/var/lib
+            cp lib/*.so $out/var/lib
           '';
         };
 
