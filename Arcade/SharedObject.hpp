@@ -12,6 +12,7 @@
 #include <ASS/IEngine.hpp>
 #include <ASS/IGame.hpp>
 #include <ASS/ISprite.hpp>
+#include <memory>
 
 #include "Exception.hpp"
 
@@ -24,12 +25,13 @@ class SharedObject
     ~SharedObject();
 
    private:
-    void *_handle;
+    std::unique_ptr<void, int (*)(void *)> _handle;
 
     template <typename T>
     T *get_symbol(const std::string &name)
     {
-        auto *symbol = reinterpret_cast<T *(*)()>(dlsym(_handle, name.c_str()));
+        auto *symbol =
+            reinterpret_cast<T *(*)()>(dlsym(_handle.get(), name.c_str()));
         if (symbol == nullptr)
             throw gg::Exception(dlerror());
         return symbol();

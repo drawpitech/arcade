@@ -8,16 +8,13 @@
 #include "SharedObject.hpp"
 
 gg::SharedObject::SharedObject(const std::string &path)
+    : _handle(dlopen(path.c_str(), RTLD_LAZY), dlclose)
 {
-    _handle = dlopen(path.c_str(), RTLD_LAZY);
     if (_handle == nullptr)
         throw gg::Exception(dlerror());
 }
 
-gg::SharedObject::~SharedObject()
-{
-    dlclose(_handle);
-}
+gg::SharedObject::~SharedObject() = default;
 
 template <>
 ass::IGame *gg::SharedObject::get<ass::IGame>()
