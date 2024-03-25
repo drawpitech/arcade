@@ -13,7 +13,7 @@
 #include <memory>
 
 #include "Engine.hpp"
-#include "Entrypoint.hpp"
+#include "SharedObject.hpp"
 
 gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
 {
@@ -28,10 +28,8 @@ gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
     if (game.empty() || renderer.empty())
         throw gg::Exception("Missing arguments");
 
-    _game = std::make_unique<gg::Entrypoint<ass::IGame>>(
-        _args.getGame(), "uwu_goofy_ahhh_game_entrypoint");
-    _renderer = std::make_unique<gg::Entrypoint<ass::IRenderer>>(
-        _args.getRenderer(), "uwu_goofy_ahhh_renderer_entrypoint");
+    _game = std::make_unique<gg::SharedObject>(_args.getGame());
+    _renderer = std::make_unique<gg::SharedObject>(_args.getRenderer());
 }
 
 gg::Arcade::~Arcade() = default;
@@ -39,9 +37,9 @@ gg::Arcade::~Arcade() = default;
 int gg::Arcade::run()
 {
     gg::Engine engine;
-    engine.set_renderer(_renderer->get());
+    engine.set_renderer(_renderer->get<ass::IRenderer>());
 
-    auto *game = _game->get();
+    auto *game = _game->get<ass::IGame>();
     game->start(&engine);
     game->run();
     game->stop();

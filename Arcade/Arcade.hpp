@@ -8,14 +8,10 @@
 #pragma once
 
 #include <cstdint>
-#include <list>
 #include <memory>
-#include <string>
-#include <utility>
 
-#include "ASS/IGame.hpp"
 #include "Args.hpp"
-#include "Entrypoint.hpp"
+#include "SharedObject.hpp"
 
 namespace gg {
 
@@ -38,8 +34,8 @@ class Arcade
 
    private:
     Args _args;
-    std::unique_ptr<gg::Entrypoint<ass::IGame>> _game;
-    std::unique_ptr<gg::Entrypoint<ass::IRenderer>> _renderer;
+    std::unique_ptr<gg::SharedObject> _game;
+    std::unique_ptr<gg::SharedObject> _renderer;
 };
 
 }  // namespace gg
