@@ -14,6 +14,7 @@
 #include <utility>
 
 #include "ASS/IGame.hpp"
+#include "Args.hpp"
 #include "Entrypoint.hpp"
 
 namespace gg {
@@ -36,37 +37,9 @@ class Arcade
     int run();
 
    private:
-    arg_t _args;
+    Args _args;
     std::unique_ptr<gg::Entrypoint<ass::IGame>> _game;
     std::unique_ptr<gg::Entrypoint<ass::IRenderer>> _renderer;
-
-    std::string loadArgs(int argc, char **argv);
-    static void printHelp();
 };
 
-class Arg
-{
-   public:
-    enum
-    {
-        HELP = 1 << 0,
-    };
-
-    Arg(char c, std::string name, std::string description, arg_t arg)
-        : c(c),
-          name(std::move(name)),
-          description(std::move(description)),
-          arg(arg)
-    {
-    }
-
-    char c;
-    std::string name;
-    std::string description;
-    arg_t arg;
-};
-
-static const std::list<Arg> ARGS = {
-    {'h', "help", "Display the help message", Arg::HELP},
-};
 }  // namespace gg
