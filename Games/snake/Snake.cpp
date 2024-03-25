@@ -7,9 +7,10 @@
 
 #include "Snake.hpp"
 
-#include <curses.h>
+#include <ncurses.h>
 
 #include <ASS/IGame.hpp>
+#include <ASS/ISprite.hpp>
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -51,32 +52,32 @@ void Snake::run()
     const auto interval = std::chrono::milliseconds(100);
 
     pos_t fruit{
-        .x = rand() % COLS,
-        .y = rand() % LINES,
+        .x = rand() % COLS,   // ncurses
+        .y = rand() % LINES,  // ncurses
     };
 
     while (true) {
         auto &head = snake.body.at(0);
-        switch (getch()) {
-            case KEY_UP:
+        switch (getch()) {  // ncurses
+            case KEY_UP:    // ncurses
                 if (snake.direction.y == 1)
                     continue;
                 snake.direction.x = 0;
                 snake.direction.y = -1;
                 break;
-            case KEY_DOWN:
+            case KEY_DOWN:  // ncurses
                 if (snake.direction.y == -1)
                     continue;
                 snake.direction.x = 0;
                 snake.direction.y = 1;
                 break;
-            case KEY_LEFT:
+            case KEY_LEFT:  // ncurses
                 if (snake.direction.x == 1)
                     continue;
                 snake.direction.x = -1;
                 snake.direction.y = 0;
                 break;
-            case KEY_RIGHT:
+            case KEY_RIGHT:  // ncurses
                 if (snake.direction.x == -1)
                     continue;
                 snake.direction.x = 1;
@@ -97,18 +98,18 @@ void Snake::run()
 
         if (head.x == fruit.x && head.y == fruit.y) {
             snake.body.push_back({fruit.x, fruit.y});
-            fruit.x = rand() % COLS;
-            fruit.y = rand() % LINES;
+            fruit.x = rand() % COLS;   // ncurses
+            fruit.y = rand() % LINES;  // ncurses
         } else if (
             head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= LINES) {
             return;
         }
 
-        clear();
+        _engine->get_renderer()->clear(ass::TermColor::Black);
         for (auto &part : snake.body)
-            mvprintw(part.y, part.x, "o");
-        mvprintw(fruit.y, fruit.x, "x");
-        refresh();
+            mvprintw(part.y, part.x, "o");  // ncurses
+        mvprintw(fruit.y, fruit.x, "x");    // ncurses
+        _engine->get_renderer()->refresh();
         std::this_thread::sleep_for(interval);
     }
 }
