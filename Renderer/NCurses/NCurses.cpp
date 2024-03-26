@@ -17,9 +17,7 @@ extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint()
     return new NCurses();
 }
 
-NCurses::~NCurses() = default;
-
-void NCurses::start()
+NCurses::NCurses()
 {
     initscr();
     cbreak();
@@ -29,17 +27,17 @@ void NCurses::start()
     keypad(stdscr, TRUE);
 }
 
-void NCurses::refresh() {}
-
-void NCurses::clear(ass::TermColor color)
-{
-    ::clear();
-}
-
-void NCurses::stop() noexcept
+NCurses::~NCurses()
 {
     delwin(stdscr);
     endwin();
+}
+
+void NCurses::refresh() {}
+
+void NCurses::clear(ass::TermColor /*color*/)
+{
+    ::clear();
 }
 
 void NCurses::set_title(std::wstring title) {}

@@ -40,9 +40,7 @@ int gg::Arcade::run()
     engine.set_renderer(_renderer->get<ass::IRenderer>());
 
     auto *game = _game->get<ass::IGame>();
-    game->start(&engine);
-    game->run();
-    game->stop();
+    game->run(engine);
     delete game;
     return 0;
 }

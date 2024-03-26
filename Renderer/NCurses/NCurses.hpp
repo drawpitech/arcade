@@ -20,18 +20,12 @@ class NCurses : public ass::IRenderer
         std::wstring title;
     };
 
+    NCurses();
     ~NCurses() override;
-
-    void start() final;
 
     void refresh() final;
 
     void clear(ass::TermColor color) final;
 
-    void stop() noexcept final;
-
     void set_title(std::wstring title) final;
-
-   private:
-    ass::IEngine *_engine;
 };

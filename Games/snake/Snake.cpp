@@ -21,12 +21,15 @@ extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
     return new Snake();
 }
 
-void Snake::start(ass::IEngine *engine)
+Snake::Snake()
 {
-    _engine = engine;
     std::clog << "Start snake game." << std::endl;
-    _engine->get_renderer().start();
     std::srand(std::time(nullptr));
+}
+
+Snake::~Snake()
+{
+    std::clog << "Stop  snake game." << std::endl;
 }
 
 using pos_t = struct
@@ -35,7 +38,7 @@ using pos_t = struct
     int y;
 };
 
-void Snake::run()
+void Snake::run(ass::IEngine &engine)
 {
     std::clog << "Run   snake game." << std::endl;
     struct
@@ -63,7 +66,7 @@ void Snake::run()
             case 'q':
                 running = false;
                 break;
-            case KEY_UP:    // ncurses
+            case KEY_UP:  // ncurses
                 if (snake.direction.y == 1)
                     continue;
                 snake.direction.x = 0;
@@ -109,17 +112,11 @@ void Snake::run()
             return;
         }
 
-        _engine->get_renderer().clear(ass::TermColor::Black);
+        engine.get_renderer().clear(ass::TermColor::Black);
         for (auto &part : snake.body)
             mvprintw(part.y, part.x, "o");  // ncurses
         mvprintw(fruit.y, fruit.x, "x");    // ncurses
-        _engine->get_renderer().refresh();
+        engine.get_renderer().refresh();
         std::this_thread::sleep_for(interval);
     }
-}
-
-void Snake::stop()
-{
-    std::clog << "Stop  snake game." << std::endl;
-    _engine->get_renderer().stop();
 }

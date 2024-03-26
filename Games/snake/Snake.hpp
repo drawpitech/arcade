@@ -13,10 +13,8 @@
 class Snake : public ass::IGame
 {
    public:
-    void start(ass::IEngine *engine) final;
-    void run() final;
-    void stop() final;
+    Snake();
+    ~Snake() override;
 
-   private:
-    ass::IEngine *_engine;
+    void run(ass::IEngine &engine) final;
 };
