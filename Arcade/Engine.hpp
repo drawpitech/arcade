@@ -9,6 +9,7 @@
 
 #include <ASS/IEngine.hpp>
 #include <ASS/ISprite.hpp>
+#include <map>
 #include <memory>
 
 #include "Exception.hpp"
@@ -24,9 +25,10 @@ class Engine : public ass::IEngine
     Engine();
     ~Engine() override;
 
-    void refresh() final;
+    std::unique_ptr<ass::ISprite> create_sprite() final;
+    void draw_sprite(ass::ISprite &sprite) final;
 
-    ass::ISprite **create_sprite(ass::SpriteAssets sprite) final;
+    void refresh() final;
 
     void clear(ass::TermColor color) final;
 
@@ -39,6 +41,7 @@ class Engine : public ass::IEngine
 
    private:
     std::unique_ptr<ass::IRenderer> _renderer;
+    std::map<ass::ISprite *, void *> _sprites;
 };
 
 }  // namespace gg

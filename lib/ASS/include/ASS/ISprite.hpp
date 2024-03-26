@@ -8,6 +8,8 @@
 #pragma once
 
 #include <sys/types.h>
+
+#include <string>
 #include <vector>
 
 #include "Vector2.hpp"
@@ -35,7 +37,6 @@ enum class TermColor: xterm_color_t {
     White
 };
 
-using image_sprite_t = std::vector<std::byte>;
 using ascii_color_array_t = std::vector<std::vector<xterm_color_t>>;
 using ascii_char_array_t = std::vector<std::vector<wchar_t>>;
 
@@ -47,7 +48,7 @@ struct SpriteAssets {
         ascii_color_array_t bg_colors;
     } sprite;
 
-    image_sprite_t image;
+    std::string path;
 };
 
 class ISprite {
@@ -55,16 +56,15 @@ public:
     ISprite() = default;
     virtual ~ISprite() = default;
 
-    virtual void set_asset(SpriteAssets asset);
+    virtual void set_asset(SpriteAssets asset) = 0;
 
     virtual void move(Vector2<float> pos) = 0;
     virtual Vector2<float> position() = 0;
-
-    virtual void draw() = 0;
 
     ISprite(const ISprite &) = default;
     ISprite(ISprite &&) = default;
     ISprite &operator=(const ISprite &) = default;
     ISprite &operator=(ISprite &&) = default;
 };
+
 } // namespace ass

@@ -7,12 +7,29 @@
 
 #include "Engine.hpp"
 
+#include <iostream>
+#include <memory>
+
+#include "Sprite.hpp"
+
 gg::Engine::Engine() = default;
 gg::Engine::~Engine() = default;
 
-void gg::Engine::refresh() {}
+std::unique_ptr<ass::ISprite> gg::Engine::create_sprite()
+{
+    return std::make_unique<gg::Sprite>();
+}
 
-ass::ISprite **gg::Engine::create_sprite(ass::SpriteAssets sprite) {}
+void gg::Engine::draw_sprite(ass::ISprite &sprite)
+{
+    if (!_sprites.contains(&sprite)) {
+        std::clog << "need to create sprite" << std::endl;
+    }
+    // TODO: renderer.draw()
+    std::clog << "need to draw sprite" << std::endl;
+}
+
+void gg::Engine::refresh() {}
 
 void gg::Engine::clear(ass::TermColor color) {}
 

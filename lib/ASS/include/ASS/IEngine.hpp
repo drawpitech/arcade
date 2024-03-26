@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "IRenderer.hpp"
@@ -31,9 +32,10 @@ public:
     IEngine() = default;
     virtual ~IEngine() = default;
 
-    virtual void refresh() = 0;
+    virtual std::unique_ptr<ass::ISprite> create_sprite() = 0;
+    virtual void draw_sprite(ass::ISprite &) = 0;
 
-    virtual ISprite **create_sprite(SpriteAssets sprite) = 0;
+    virtual void refresh() = 0;
 
     virtual void clear(TermColor color) = 0;
 
