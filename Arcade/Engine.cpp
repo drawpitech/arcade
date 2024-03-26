@@ -27,9 +27,15 @@ void gg::Engine::draw_sprite(ass::ISprite &sprite)
     _renderer->draw_sprite(sprite, *_sprites.at(&sprite));
 }
 
-void gg::Engine::refresh() {}
+void gg::Engine::refresh()
+{
+    _renderer->refresh();
+}
 
-void gg::Engine::clear(ass::TermColor color) {}
+void gg::Engine::clear(ass::TermColor color)
+{
+    _renderer->clear(color);
+}
 
 void gg::Engine::set_title(std::wstring title) {}
 
@@ -37,6 +43,7 @@ std::vector<Event> gg::Engine::events() {}
 
 void gg::Engine::set_renderer(ass::IRenderer *renderer)
 {
+    // TODO: free all sprites
     _renderer.reset(renderer);
 }
 

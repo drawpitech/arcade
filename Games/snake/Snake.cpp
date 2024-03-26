@@ -67,10 +67,9 @@ void Snake::run(ass::IEngine &engine)
         static_cast<float>(rand() % LINES),
     });
 
-    /* fruit->move({0, 0}); */
-
     bool running = true;
     while (running) {
+        // TODO: Catch inputs with ncurses
         auto &head = snake.body.at(0);
         switch (getch()) {  // ncurses
             case 'q':
@@ -124,13 +123,13 @@ void Snake::run(ass::IEngine &engine)
             return;
         }
 
-        engine.get_renderer().clear(ass::TermColor::Black);
+        engine.clear(ass::TermColor::Black);
         for (auto &part : snake.body) {
             snake_sprite->move({part.x, part.y});
             engine.draw_sprite(*snake_sprite);
         }
         engine.draw_sprite(*fruit);
-        engine.get_renderer().refresh();
+        engine.refresh();
         std::this_thread::sleep_for(interval);
     }
 }
