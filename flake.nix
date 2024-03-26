@@ -7,6 +7,32 @@
   outputs = {self, ...} @ inputs:
     inputs.utils.lib.eachDefaultSystem (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
+
+      buildArcade = target:
+        pkgs.stdenv.mkDerivation {
+          name = "arcade";
+          src = ./.;
+          nativeBuildInputs = with pkgs; [
+            cmake
+            pkg-config
+            ncurses
+            sfml
+          ];
+          enableParallelBuilding = true;
+          buildPhase = ''
+            cmake -DCMAKE_BUILD_TYPE=${target} -S ${./.} -B .build
+            make -C .build -j
+          '';
+          installPhase = ''
+            cd .build
+
+            mkdir -p $out/bin
+            cp arcade $out/bin
+
+            mkdir -p $out/var/lib
+            cp lib/*.so $out/var/lib
+          '';
+        };
     in rec {
       devShells.default = pkgs.mkShell {
         packages =
@@ -32,23 +58,8 @@
 
       packages = {
         default = packages.arcade;
-        arcade = pkgs.stdenv.mkDerivation rec {
-          name = "arcade";
-          src = ./.;
-          nativeBuildInputs = with pkgs; [
-            cmake
-            pkg-config
-            ncurses
-            sfml
-          ];
-          installPhase = ''
-            mkdir -p $out/bin
-            cp ${name} $out/bin
-
-            mkdir -p $out/var/lib
-            cp lib/*.so $out/var/lib
-          '';
-        };
+        arcade = buildArcade "release";
+        debug = buildArcade "debug";
 
         doc = pkgs.stdenv.mkDerivation {
           name = "doc";

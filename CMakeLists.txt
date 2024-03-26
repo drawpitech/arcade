@@ -9,6 +9,15 @@ project(
   LANGUAGES CXX
   VERSION 0.1.0)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "release")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "debug")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g3 -fsanitize=address,leak,undefined -fanalyzer")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -fsanitize=address,leak,undefined -fanalyzer")
+endif()
+
 # ↓ ASS library
 add_subdirectory(lib/ASS)
 
