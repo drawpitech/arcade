@@ -24,20 +24,15 @@ extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
 
 Snake::Snake()
 {
-    std::clog << "Start snake game." << std::endl;
     std::srand(std::time(nullptr));
 }
 
-Snake::~Snake()
-{
-    std::clog << "Stop  snake game." << std::endl;
-}
+Snake::~Snake() = default;
 
 using pos_t = Vector2<float>;
 
 void Snake::run(ass::IEngine &engine)
 {
-    std::clog << "Run   snake game." << std::endl;
     const auto interval = std::chrono::milliseconds(100);
 
     auto createSprite = [&engine](char c) {
@@ -132,9 +127,9 @@ void Snake::run(ass::IEngine &engine)
         engine.get_renderer().clear(ass::TermColor::Black);
         for (auto &part : snake.body) {
             snake_sprite->move({part.x, part.y});
-            engine.get_renderer().draw_sprite(*snake_sprite);
+            engine.draw_sprite(*snake_sprite);
         }
-        engine.get_renderer().draw_sprite(*fruit);
+        engine.draw_sprite(*fruit);
         engine.get_renderer().refresh();
         std::this_thread::sleep_for(interval);
     }

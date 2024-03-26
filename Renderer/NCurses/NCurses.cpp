@@ -43,7 +43,7 @@ void NCurses::clear(ass::TermColor /*color*/)
 
 void NCurses::set_title(std::wstring title) {}
 
-void NCurses::draw_sprite(ass::ISprite &sprite) {
+void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/) {
     auto pos = sprite.position();
     auto assets = sprite.get_asset().sprite;
 

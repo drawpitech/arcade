@@ -29,5 +29,5 @@ class NCurses : public ass::IRenderer
 
     void set_title(std::wstring title) final;
 
-    void draw_sprite(ass::ISprite &sprite) final;
+    void draw_sprite(ass::ISprite &sprite, void *&raw_data) final;
 };
