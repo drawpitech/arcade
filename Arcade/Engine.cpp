@@ -37,9 +37,7 @@ void gg::Engine::clear(ass::TermColor color)
     _renderer->clear(color);
 }
 
-void gg::Engine::set_title(std::wstring title) {}
-
-std::vector<Event> gg::Engine::events() {}
+std::vector<ass::Event> gg::Engine::events() {}
 
 void gg::Engine::set_renderer(ass::IRenderer *renderer)
 {

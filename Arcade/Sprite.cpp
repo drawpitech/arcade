@@ -19,12 +19,12 @@ ass::SpriteAssets &gg::Sprite::get_asset() {
     return _assets;
 }
 
-void gg::Sprite::move(Vector2<float> pos)
+void gg::Sprite::move(ass::Vector2<float> pos)
 {
     _position = pos;
 }
 
-Vector2<float> gg::Sprite::position()
+ass::Vector2<float> gg::Sprite::position()
 {
     return _position;
 }

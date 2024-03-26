@@ -13,7 +13,6 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 #include <chrono>
-#include <iostream>
 #include <thread>
 #include <vector>
 
@@ -29,7 +28,7 @@ Snake::Snake()
 
 Snake::~Snake() = default;
 
-using pos_t = Vector2<float>;
+using pos_t = ass::Vector2<float>;
 
 void Snake::run(ass::IEngine &engine)
 {

@@ -32,9 +32,7 @@ class Engine : public ass::IEngine
 
     void clear(ass::TermColor color) final;
 
-    void set_title(std::wstring title) final;
-
-    std::vector<Event> events() final;
+    std::vector<ass::Event> events() final;
 
     void set_renderer(ass::IRenderer *renderer) final;
     ass::IRenderer &get_renderer() final;
