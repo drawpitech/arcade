@@ -5,12 +5,13 @@
 ** main.cpp
 */
 
+#include <ASS/Events.hpp>
 #include <ASS/IEngine.hpp>
 #include <ASS/IGame.hpp>
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
 
-
-int main(int argc, char *argv[])
+int main()
 {
+    return 0;
 }
