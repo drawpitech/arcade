@@ -45,6 +45,8 @@ public:
 
     virtual void set_title(std::wstring title) = 0;
 
+    virtual void draw_sprite(ISprite &sprite) = 0;
+
     IRenderer(const IRenderer &) = default;
     IRenderer(IRenderer &&) = delete;
     IRenderer &operator=(const IRenderer &) = default;

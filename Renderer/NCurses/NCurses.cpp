@@ -8,6 +8,7 @@
 #include "NCurses.hpp"
 
 #include <curses.h>
+#include <ncursesw/ncurses.h>
 
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
@@ -41,3 +42,16 @@ void NCurses::clear(ass::TermColor /*color*/)
 }
 
 void NCurses::set_title(std::wstring title) {}
+
+void NCurses::draw_sprite(ass::ISprite &sprite) {
+    auto pos = sprite.position();
+    auto assets = sprite.get_asset().sprite;
+
+    size_t y = pos.y;
+    for (size_t i = 0; i < assets.height; i++) {
+        size_t x = pos.x;
+        for (wchar_t ch : assets.chars.at(i))
+            mvaddnwstr(y, x++, &ch, 1);
+        y++;
+    }
+}

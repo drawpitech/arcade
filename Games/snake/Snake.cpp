@@ -11,6 +11,7 @@
 
 #include <ASS/IGame.hpp>
 #include <ASS/ISprite.hpp>
+#include <ASS/Vector2.hpp>
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -32,32 +33,46 @@ Snake::~Snake()
     std::clog << "Stop  snake game." << std::endl;
 }
 
-using pos_t = struct
-{
-    int x;
-    int y;
-};
+using pos_t = Vector2<float>;
 
 void Snake::run(ass::IEngine &engine)
 {
     std::clog << "Run   snake game." << std::endl;
+    const auto interval = std::chrono::milliseconds(100);
+
+    auto createSprite = [&engine](char c) {
+        auto sprite = engine.create_sprite();
+        sprite->set_asset({
+            .sprite =
+                {
+                    .height = 1,
+                    .width = 1,
+                    .chars = {{c}},
+                },
+            .path = "",
+        });
+        return sprite;
+    };
+
     struct
     {
         std::vector<pos_t> body;
-        pos_t direction{};
-    } snake;
-
-    snake.direction = {
-        .x = 1,
-        .y = 0,
-    };
+        pos_t direction{
+            .x = 1,
+            .y = 0,
+        };
+    } snake{};
     snake.body.push_back({0, 0});
-    const auto interval = std::chrono::milliseconds(100);
 
-    pos_t fruit{
-        .x = rand() % COLS,   // ncurses
-        .y = rand() % LINES,  // ncurses
-    };
+    auto snake_sprite = createSprite('o');
+
+    auto fruit = createSprite('x');
+    fruit->move({
+        static_cast<float>(rand() % COLS),
+        static_cast<float>(rand() % LINES),
+    });
+
+    /* fruit->move({0, 0}); */
 
     bool running = true;
     while (running) {
@@ -103,19 +118,23 @@ void Snake::run(ass::IEngine &engine)
             if (head.x == snake.body.at(i).x && head.y == snake.body.at(i).y)
                 return;
 
-        if (head.x == fruit.x && head.y == fruit.y) {
-            snake.body.push_back({fruit.x, fruit.y});
-            fruit.x = rand() % COLS;   // ncurses
-            fruit.y = rand() % LINES;  // ncurses
+        auto fruit_pos = fruit->position();
+        if (head.x == fruit_pos.x && head.y == fruit_pos.y) {
+            snake.body.push_back({fruit_pos.x, fruit_pos.y});
+            float x = rand() % COLS;
+            float y = rand() % LINES;
+            fruit->move({x, y});
         } else if (
             head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= LINES) {
             return;
         }
 
         engine.get_renderer().clear(ass::TermColor::Black);
-        for (auto &part : snake.body)
-            mvprintw(part.y, part.x, "o");  // ncurses
-        mvprintw(fruit.y, fruit.x, "x");    // ncurses
+        for (auto &part : snake.body) {
+            snake_sprite->move({part.x, part.y});
+            engine.get_renderer().draw_sprite(*snake_sprite);
+        }
+        engine.get_renderer().draw_sprite(*fruit);
         engine.get_renderer().refresh();
         std::this_thread::sleep_for(interval);
     }

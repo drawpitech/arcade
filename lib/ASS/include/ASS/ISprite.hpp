@@ -57,6 +57,7 @@ public:
     virtual ~ISprite() = default;
 
     virtual void set_asset(SpriteAssets asset) = 0;
+    virtual SpriteAssets &get_asset() = 0;
 
     virtual void move(Vector2<float> pos) = 0;
     virtual Vector2<float> position() = 0;

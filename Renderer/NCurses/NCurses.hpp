@@ -28,4 +28,6 @@ class NCurses : public ass::IRenderer
     void clear(ass::TermColor color) final;
 
     void set_title(std::wstring title) final;
+
+    void draw_sprite(ass::ISprite &sprite) final;
 };

@@ -11,7 +11,13 @@ gg::Sprite::Sprite() : _position(0, 0) {}
 
 gg::Sprite::~Sprite() = default;
 
-void gg::Sprite::set_asset(ass::SpriteAssets asset) {}
+void gg::Sprite::set_asset(ass::SpriteAssets assets) {
+    _assets = assets;
+}
+
+ass::SpriteAssets &gg::Sprite::get_asset() {
+    return _assets;
+}
 
 void gg::Sprite::move(Vector2<float> pos)
 {
