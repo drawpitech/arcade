@@ -25,7 +25,7 @@ void Snake::start(ass::IEngine *engine)
 {
     _engine = engine;
     std::clog << "Start snake game." << std::endl;
-    _engine->get_renderer()->start();
+    _engine->get_renderer().start();
     std::srand(std::time(nullptr));
 }
 
@@ -56,9 +56,13 @@ void Snake::run()
         .y = rand() % LINES,  // ncurses
     };
 
-    while (true) {
+    bool running = true;
+    while (running) {
         auto &head = snake.body.at(0);
         switch (getch()) {  // ncurses
+            case 'q':
+                running = false;
+                break;
             case KEY_UP:    // ncurses
                 if (snake.direction.y == 1)
                     continue;
@@ -105,11 +109,11 @@ void Snake::run()
             return;
         }
 
-        _engine->get_renderer()->clear(ass::TermColor::Black);
+        _engine->get_renderer().clear(ass::TermColor::Black);
         for (auto &part : snake.body)
             mvprintw(part.y, part.x, "o");  // ncurses
         mvprintw(fruit.y, fruit.x, "x");    // ncurses
-        _engine->get_renderer()->refresh();
+        _engine->get_renderer().refresh();
         std::this_thread::sleep_for(interval);
     }
 }
@@ -117,5 +121,5 @@ void Snake::run()
 void Snake::stop()
 {
     std::clog << "Stop  snake game." << std::endl;
-    _engine->get_renderer()->stop();
+    _engine->get_renderer().stop();
 }

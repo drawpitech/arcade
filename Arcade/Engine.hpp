@@ -35,7 +35,7 @@ class Engine : public ass::IEngine
     std::vector<Event> events() final;
 
     void set_renderer(ass::IRenderer *renderer) final;
-    ass::IRenderer *get_renderer() final;
+    ass::IRenderer &get_renderer() final;
 
    private:
     std::unique_ptr<ass::IRenderer> _renderer;

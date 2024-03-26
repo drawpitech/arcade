@@ -41,6 +41,6 @@ public:
     virtual std::vector<Event> events() = 0;
 
     virtual void set_renderer(ass::IRenderer *renderer) = 0;
-    virtual ass::IRenderer *get_renderer() = 0;
+    virtual ass::IRenderer &get_renderer() = 0;
 };
 } // namespace ass

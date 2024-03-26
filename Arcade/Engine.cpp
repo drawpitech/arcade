@@ -25,9 +25,9 @@ void gg::Engine::set_renderer(ass::IRenderer *renderer)
     _renderer.reset(renderer);
 }
 
-ass::IRenderer *gg::Engine::get_renderer()
+ass::IRenderer &gg::Engine::get_renderer()
 {
     if (_renderer == nullptr)
         throw gg::Exception("ono no renderer loaded");
-    return _renderer.get();
+    return *_renderer;
 }

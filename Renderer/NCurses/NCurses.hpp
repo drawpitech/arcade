@@ -7,10 +7,10 @@
 
 #pragma once
 
+#include <ASS/IEngine.hpp>
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
 #include <string>
-#include "ASS/IEngine.hpp"
 
 class NCurses : public ass::IRenderer
 {
