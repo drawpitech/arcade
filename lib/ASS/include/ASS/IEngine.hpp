@@ -8,7 +8,11 @@
 /**
  * @file
  *
- * @brief File declaring IEngine Interface
+ * @brief Header file declaring IEngine Interface
+ */
+
+/**
+ * @defgroup engine Engine
  */
 
 #pragma once
@@ -22,25 +26,49 @@
 
 namespace ass {
 /**
+ * @interface IEngine
+ * @exception IEngine::Exception
+ * @ingroup engine
  * @brief Engine Interface
- * @details Set of method to implement for the business logic of the Arcade project
+ * @details Set of method to implement for the Engine Part of the Arcade project
+ *
  */
 class IEngine {
 public:
+    /**
+     * @brief Engine Exception
+     * @details Base class for Engines’s scoped exceptions
+     */
     class Exception: public std::exception {};
 
     IEngine() = default;
     virtual ~IEngine() = default;
 
-    virtual std::unique_ptr<ass::ISprite> create_sprite() = 0;
-    virtual void draw_sprite(ass::ISprite &) = 0;
-
+    /**
+     * @copydoc IRenderer::refresh()
+     */
     virtual void refresh() = 0;
 
+   /**
+    * @brief Create a new sprite
+    * @return Pointer to a new sprite
+    */
+    virtual std::unique_ptr<ass::ISprite> create_sprite() = 0;
+
+    /**
+     * @brief Draw a sprite
+     */
+    virtual void draw_sprite(ass::ISprite &) = 0;
+
+    /**
+     * @copydoc IRenderer::clear()
+     */
     virtual void clear(TermColor color) = 0;
 
-    virtual void set_title(std::wstring title) = 0;
-
+    /**
+     * @brief get last events from engine
+     * @return array of Event
+     */
     virtual std::vector<Event> events() = 0;
 
     virtual void set_renderer(ass::IRenderer *renderer) = 0;

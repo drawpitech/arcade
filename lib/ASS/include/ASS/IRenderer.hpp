@@ -30,19 +30,30 @@ namespace ass {
  */
 class IRenderer {
 public:
-    struct Properties {
-        std::wstring title;
-    };
-
+    /**
+     * @brief Renderer Exception
+     * @details Base class for Renderer’s scoped exceptions
+     */
     class Exception: public std::exception {};
 
     IRenderer() = default;
     virtual ~IRenderer() = default;
 
+    /**
+     * @brief Flushes current renderer state to user
+     */
     virtual void refresh() = 0;
 
+    /**
+     * @brief Fill entire window with color
+     * @param[in] color filling color
+     */
     virtual void clear(TermColor color) = 0;
 
+    /**
+     * @brief Set current window title
+     * @param[in] title title of the window
+     */
     virtual void set_title(std::wstring title) = 0;
 
     virtual void draw_sprite(ISprite &sprite, void *&raw_data) = 0;
@@ -55,4 +66,11 @@ public:
 
 } // namespace ass
 
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint();
+/**
+ * @brief Arcade Renderer shared library entrypoint
+ * @relates ass::IRenderer
+ * @ingroup renderer
+ * @attention Must be defined and return a pointer to a final class derived from IRenderer
+ * @return pointer to a newly allocated IRenderer derived class
+ */
+extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint(void);

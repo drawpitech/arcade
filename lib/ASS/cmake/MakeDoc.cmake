@@ -6,7 +6,7 @@ if (DOXYGEN_FOUND)
     set(DOXYGEN_GENERATE_LATEX YES)
     set(DOXYGEN_QUIET YES)
     set(DOXYGEN_STRIP_FROM_INC_PATH include)
-    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
+    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/doc)
     set(DOXYGEN_HTML_EXTRA_STYLESHEET doxygen-awesome.css)
     set(DOXYGEN_DISABLE_INDEX NO)
     set(DOXYGEN_FULL_SIDEBAR NO)
@@ -15,15 +15,21 @@ if (DOXYGEN_FOUND)
             mainpage.md
             ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
-    add_custom_command(TARGET doc
-            POST_BUILD
-            WORKING_DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY}/latex
-            COMMAND ${CMAKE_MAKE_PROGRAM} > /dev/null
+
+    add_custom_command(OUTPUT ASS-doc.pdf
+            COMMAND
+            ${CMAKE_MAKE_PROGRAM} -C ${DOXYGEN_OUTPUT_DIRECTORY}/latex/ > /dev/null
             && ${CMAKE_COMMAND} -E copy
             ${DOXYGEN_OUTPUT_DIRECTORY}/latex/refman.pdf
-            ${DOXYGEN_OUTPUT_DIRECTORY}/ASS-doc.pdf
-            BYPRODUCTS ${DOXYGEN_OUTPUT_DIRECTORY}/ASS-doc.pdf
+            ASS-doc.pdf
+            DEPENDS doc
             VERBATIM
+    )
+
+    add_custom_target(doc-pdf
+            DEPENDS ASS-doc.pdf
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ASS-doc.pdf ${CMAKE_SOURCE_DIR}/doc/ASS-doc.pdf
     )
 else ()
     message(WARNING "Doxygen is necessary for docs")
