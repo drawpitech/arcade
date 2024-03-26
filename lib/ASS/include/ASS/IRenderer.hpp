@@ -28,7 +28,7 @@ namespace ass {
  * @brief Renderer Interface
  * @details Set of method to implement for the Renderer part of the Arcade project
  */
-class IRenderer { // NOLINT(cppcoreguidelines-special-member-functions)
+class IRenderer {
 public:
     struct Properties {
         std::wstring title;
@@ -36,17 +36,19 @@ public:
 
     class Exception: public std::exception {};
 
+    IRenderer() = default;
     virtual ~IRenderer() = default;
-
-    virtual void start() = 0;
 
     virtual void refresh() = 0;
 
     virtual void clear(TermColor color) = 0;
 
-    virtual void stop() noexcept = 0;
-
     virtual void set_title(std::wstring title) = 0;
+
+    IRenderer(const IRenderer &) = default;
+    IRenderer(IRenderer &&) = delete;
+    IRenderer &operator=(const IRenderer &) = default;
+    IRenderer &operator=(IRenderer &&) = delete;
 };
 
 } // namespace ass

@@ -24,10 +24,11 @@ namespace ass {
  * @brief Engine Interface
  * @details Set of method to implement for the business logic of the Arcade project
  */
-class IEngine { // NOLINT(cppcoreguidelines-special-member-functions)
+class IEngine {
 public:
     class Exception: public std::exception {};
 
+    IEngine() = default;
     virtual ~IEngine() = default;
 
     virtual void refresh() = 0;
@@ -42,5 +43,10 @@ public:
 
     virtual void set_renderer(ass::IRenderer *renderer) = 0;
     virtual ass::IRenderer &get_renderer() = 0;
+
+    IEngine(const IEngine &) = default;
+    IEngine(IEngine &&) = delete;
+    IEngine &operator=(const IEngine &) = default;
+    IEngine &operator=(IEngine &&) = delete;
 };
 } // namespace ass

@@ -22,19 +22,20 @@ namespace ass {
  * @brief Game Interface
  * @details Set of method to implement for the Game part of the Arcade project
  */
-class IGame { // NOLINT(cppcoreguidelines-special-member-functions)
+class IGame {
 public:
-    virtual ~IGame() = default;
-
     class Exception: public std::exception {};
 
-    virtual void start(ass::IEngine *engine) = 0;
+    IGame() = default;
+    virtual ~IGame() = default;
+    virtual void run(ass::IEngine &) = 0;;
 
-    virtual void run() = 0;
-
-    virtual void stop() = 0;
+    IGame(const IGame &) = default;
+    IGame(IGame &&) = delete;
+    IGame &operator=(const IGame &) = default;
+    IGame &operator=(IGame &&) = delete;
 };
 
-} // namespace ass
+}  // namespace ass
 
 extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint();

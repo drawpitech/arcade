@@ -50,8 +50,9 @@ struct SpriteAssets {
     image_sprite_t image;
 };
 
-class ISprite { // NOLINT(cppcoreguidelines-special-member-functions)
+class ISprite {
 public:
+    ISprite() = default;
     virtual ~ISprite() = default;
 
     virtual void set_asset(SpriteAssets asset);
@@ -60,5 +61,10 @@ public:
     virtual Vector2<float> position() = 0;
 
     virtual void draw() = 0;
+
+    ISprite(const ISprite &) = default;
+    ISprite(ISprite &&) = default;
+    ISprite &operator=(const ISprite &) = default;
+    ISprite &operator=(ISprite &&) = default;
 };
 } // namespace ass
