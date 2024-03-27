@@ -64,3 +64,12 @@ ass::Vector2<size_t> NCurses::get_window_size() const
         static_cast<unsigned long>(LINES),
     };
 }
+
+std::vector<ass::Event> NCurses::events()
+{
+    int key = getch();
+    if (KEYS.contains(key))
+        return {{KEYS.at(key), ass::EventState::KeyPressed}};
+
+    return {};
+}

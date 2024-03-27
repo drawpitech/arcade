@@ -7,8 +7,7 @@
 
 #include "Snake.hpp"
 
-#include <ncurses.h>
-
+#include <ASS/Events.hpp>
 #include <ASS/IGame.hpp>
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
@@ -70,39 +69,42 @@ void Snake::run(ass::IEngine &engine)
     bool running = true;
     while (running) {
         auto [width, height] = engine.get_renderer().get_window_size();
-
-        // TODO: Catch inputs with ncurses
         auto &head = snake.body.at(0);
-        switch (getch()) {  // ncurses
-            case 'q':
-                running = false;
-                break;
-            case KEY_UP:  // ncurses
-                if (snake.direction.y == 1)
-                    continue;
-                snake.direction.x = 0;
-                snake.direction.y = -1;
-                break;
-            case KEY_DOWN:  // ncurses
-                if (snake.direction.y == -1)
-                    continue;
-                snake.direction.x = 0;
-                snake.direction.y = 1;
-                break;
-            case KEY_LEFT:  // ncurses
-                if (snake.direction.x == 1)
-                    continue;
-                snake.direction.x = -1;
-                snake.direction.y = 0;
-                break;
-            case KEY_RIGHT:  // ncurses
-                if (snake.direction.x == -1)
-                    continue;
-                snake.direction.x = 1;
-                snake.direction.y = 0;
-                break;
-            default:
-                break;
+
+        for (auto &event : engine.events()) {
+            if (event.state != ass::EventState::KeyPressed)
+                continue;
+            switch (event.key) {
+                case ass::EventKey::KeyQ:
+                    running = false;
+                    break;
+                case ass::EventKey::KeyUp:
+                    if (snake.direction.y == 1)
+                        continue;
+                    snake.direction.x = 0;
+                    snake.direction.y = -1;
+                    break;
+                case ass::EventKey::KeyDown:
+                    if (snake.direction.y == -1)
+                        continue;
+                    snake.direction.x = 0;
+                    snake.direction.y = 1;
+                    break;
+                case ass::EventKey::KeyLeft:
+                    if (snake.direction.x == 1)
+                        continue;
+                    snake.direction.x = -1;
+                    snake.direction.y = 0;
+                    break;
+                case ass::EventKey::KeyRight:
+                    if (snake.direction.x == -1)
+                        continue;
+                    snake.direction.x = 1;
+                    snake.direction.y = 0;
+                    break;
+                default:
+                    break;
+            }
         }
 
         for (size_t i = snake.body.size() - 1; i > 0; i--)

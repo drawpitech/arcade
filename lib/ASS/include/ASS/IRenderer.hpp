@@ -15,6 +15,7 @@
 
 #include <string>
 
+#include "Events.hpp"
 #include "ISprite.hpp"
 
 /**
@@ -68,6 +69,12 @@ public:
      * @return window size (width, height)
      */
     virtual Vector2<size_t> get_window_size() const = 0;
+
+    /**
+     * @brief get last events from engine
+     * @return array of Event
+     */
+    virtual std::vector<Event> events() = 0;
 
     IRenderer(const IRenderer &) = default;
     IRenderer(IRenderer &&) = delete;
