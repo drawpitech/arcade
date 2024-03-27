@@ -9,6 +9,7 @@
  * @file
  *
  * @brief File declaring IRenderer Interface
+ * @defgroup renderer Renderer
  */
 
 #pragma once
@@ -26,8 +27,11 @@
 namespace ass {
 
 /**
+ * @interface IRenderer
  * @brief Renderer Interface
  * @details Set of method to implement for the Renderer part of the Arcade project
+ * @ingroup renderer
+ * @exception IRenderer::Exception Renderer’s exceptions
  */
 class IRenderer {
 public:
