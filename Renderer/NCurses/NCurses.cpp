@@ -34,7 +34,10 @@ NCurses::~NCurses()
     endwin();
 }
 
-void NCurses::refresh() {}
+void NCurses::refresh()
+{
+    ::refresh();
+}
 
 void NCurses::clear(ass::TermColor /*color*/)
 {
