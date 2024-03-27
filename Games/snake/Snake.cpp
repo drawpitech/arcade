@@ -61,13 +61,16 @@ void Snake::run(ass::IEngine &engine)
     auto snake_sprite = createSprite('o');
 
     auto fruit = createSprite('x');
+    auto [width, height] = engine.get_renderer().get_window_size();
     fruit->move({
-        static_cast<float>(rand() % COLS),
-        static_cast<float>(rand() % LINES),
+        static_cast<float>(rand() % width),
+        static_cast<float>(rand() % height),
     });
 
     bool running = true;
     while (running) {
+        auto [width, height] = engine.get_renderer().get_window_size();
+
         // TODO: Catch inputs with ncurses
         auto &head = snake.body.at(0);
         switch (getch()) {  // ncurses
@@ -114,11 +117,11 @@ void Snake::run(ass::IEngine &engine)
         auto fruit_pos = fruit->position();
         if (head.x == fruit_pos.x && head.y == fruit_pos.y) {
             snake.body.push_back({fruit_pos.x, fruit_pos.y});
-            float x = rand() % COLS;
-            float y = rand() % LINES;
+            float x = rand() % width;
+            float y = rand() % height;
             fruit->move({x, y});
         } else if (
-            head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= LINES) {
+            head.x < 0 || head.x >= width || head.y < 0 || head.y >= height) {
             return;
         }
 

@@ -56,7 +56,18 @@ public:
      */
     virtual void set_title(std::wstring title) = 0;
 
+    /**
+     * @brief Draw a sprite to the window
+     * @param[in] sprite sprite to display
+     * @param[in] raw_data sprite internal used for renderer
+     */
     virtual void draw_sprite(ISprite &sprite, void *&raw_data) = 0;
+
+    /**
+     * @brief Get the window size
+     * @return window size (width, height)
+     */
+    virtual Vector2<size_t> get_window_size() const = 0;
 
     IRenderer(const IRenderer &) = default;
     IRenderer(IRenderer &&) = delete;

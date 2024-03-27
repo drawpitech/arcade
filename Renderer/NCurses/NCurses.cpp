@@ -43,7 +43,8 @@ void NCurses::clear(ass::TermColor /*color*/)
 
 void NCurses::set_title(std::wstring title) {}
 
-void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/) {
+void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/)
+{
     auto pos = sprite.position();
     auto assets = sprite.get_asset().sprite;
 
@@ -54,4 +55,12 @@ void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/) {
             mvaddnwstr(y, x++, &ch, 1);
         y++;
     }
+}
+
+ass::Vector2<size_t> NCurses::get_window_size() const
+{
+    return {
+        static_cast<unsigned long>(COLS),
+        static_cast<unsigned long>(LINES),
+    };
 }

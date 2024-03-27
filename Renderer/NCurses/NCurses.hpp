@@ -24,10 +24,9 @@ class NCurses : public ass::IRenderer
     ~NCurses() override;
 
     void refresh() final;
-
     void clear(ass::TermColor color) final;
-
     void set_title(std::wstring title) final;
-
     void draw_sprite(ass::ISprite &sprite, void *&raw_data) final;
+
+    ass::Vector2<size_t> get_window_size() const final;
 };
