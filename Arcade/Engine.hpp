@@ -39,7 +39,7 @@ class Engine : public ass::IEngine
 
    private:
     std::unique_ptr<ass::IRenderer> _renderer;
-    std::map<ass::ISprite *, std::unique_ptr<void *>> _sprites;
+    std::map<ass::ISprite *, void *> _sprites;
 };
 
 }  // namespace gg

@@ -73,3 +73,8 @@ std::vector<ass::Event> NCurses::events()
 
     return {};
 }
+
+void NCurses::free_sprite(void *&raw_data)
+{
+    // no data so no free
+}

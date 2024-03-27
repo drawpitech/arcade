@@ -58,11 +58,17 @@ public:
     virtual void set_title(std::wstring title) = 0;
 
     /**
-     * @brief Draw a sprite to the window
+     * @brief Draw a sprite to the window (should NOT be used outside of the Engine)
      * @param[in] sprite sprite to display
-     * @param[in] raw_data sprite internal used for renderer
+     * @param[in] raw_data sprite internal used by the renderer
      */
     virtual void draw_sprite(ISprite &sprite, void *&raw_data) = 0;
+
+    /**
+     * @brief Free the internal sprite's data (should NOT be used outside of the Engine)
+     * @param[in] raw_data sprite internal by for the renderer
+     */
+    virtual void free_sprite(void *&raw_data) = 0;
 
     /**
      * @brief Get the window size

@@ -68,6 +68,7 @@ class NCurses : public ass::IRenderer
     void clear(ass::TermColor color) final;
     void set_title(std::wstring title) final;
     void draw_sprite(ass::ISprite &sprite, void *&raw_data) final;
+    void free_sprite(void *&raw_data) final;
 
     ass::Vector2<size_t> get_window_size() const final;
     std::vector<ass::Event> events() final;

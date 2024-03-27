@@ -7,7 +7,6 @@
 
 #include "Engine.hpp"
 
-#include <iostream>
 #include <memory>
 
 #include "Sprite.hpp"
@@ -23,8 +22,8 @@ std::unique_ptr<ass::ISprite> gg::Engine::create_sprite()
 void gg::Engine::draw_sprite(ass::ISprite &sprite)
 {
     if (!_sprites.contains(&sprite))
-        _sprites.insert({&sprite, std::unique_ptr<void *>{nullptr}});
-    _renderer->draw_sprite(sprite, *_sprites.at(&sprite));
+        _sprites.insert({&sprite, nullptr});
+    _renderer->draw_sprite(sprite, _sprites.at(&sprite));
 }
 
 void gg::Engine::refresh()
@@ -37,13 +36,16 @@ void gg::Engine::clear(ass::TermColor color)
     _renderer->clear(color);
 }
 
-std::vector<ass::Event> gg::Engine::events() {
+std::vector<ass::Event> gg::Engine::events()
+{
     return _renderer->events();
 }
 
 void gg::Engine::set_renderer(ass::IRenderer *renderer)
 {
-    // TODO: free all sprites
+    for (auto &[_, data] : _sprites)
+        _renderer->free_sprite(data);
+    _sprites.clear();
     _renderer.reset(renderer);
 }
 
