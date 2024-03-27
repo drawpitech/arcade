@@ -52,7 +52,7 @@ void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/)
     for (size_t i = 0; i < assets.height; i++) {
         size_t x = pos.x;
         for (wchar_t ch : assets.chars.at(i))
-            mvaddnwstr(y, x++, &ch, 1);
+            mvwaddch(stdscr, y, x++, ch);
         y++;
     }
 }
