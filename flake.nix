@@ -40,6 +40,7 @@
         packages =
           (with pkgs; [
             doxygen_gui
+            act
 
             criterion
             gtest
