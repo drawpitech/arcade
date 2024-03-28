@@ -18,10 +18,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "debug")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -fsanitize=address,leak,undefined -fanalyzer")
 endif()
 
-# ↓ ASS library
+# ↓ Libraries
+include(FindPkgConfig)
 add_subdirectory(lib/ASS)
 
-# ↓ arcade binary
+# ↓ Arcade binary
 add_subdirectory(Arcade)
 
 # ↓ Games

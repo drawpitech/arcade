@@ -1,5 +1,5 @@
-set(TARGET arcade_ncurses)
-include(../../CMakeCommonLib.cmake)
+set(TARGET ncurses)
+include(${CMAKE_SOURCE_DIR}/CMakeCommonLib.cmake)
 
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})

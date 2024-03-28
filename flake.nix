@@ -19,6 +19,9 @@
             sfml
             SDL2
             SDL2_image
+            libtiff
+            libwebp
+            xdot
           ];
           enableParallelBuilding = true;
           buildPhase = ''
