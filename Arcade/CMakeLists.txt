@@ -7,7 +7,7 @@ target_link_libraries(arcade ass)
 
 set_target_properties(
   arcade
-  PROPERTIES PREFIX "../"
+  PROPERTIES PREFIX "${CMAKE_SOURCE_DIR}/"
              EXPORT_COMPILE_COMMANDS ON
              CXX_STANDARD_REQUIRED ON
              INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)

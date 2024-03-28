@@ -5,55 +5,72 @@
 ** Events.hpp
 */
 
-#pragma once
+/**
+ * @file
+ * @brief Header file for Events
+ */
 
+#pragma once
 #include <sys/types.h>
 
+namespace ass {
+/**
+ * @brief Event Key enumeration
+ */
 enum class EventKey: u_int8_t {
-    A = 1,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
-    Up,
-    Down,
-    Left,
-    Right,
-    Enter,
-    Space,
-    RMB,
-    LMB,
-    MMB,
+    KeyA,
+    KeyB,
+    KeyC,
+    KeyD,
+    KeyE,
+    KeyF,
+    KeyG,
+    KeyH,
+    KeyI,
+    KeyJ,
+    KeyK,
+    KeyL,
+    KeyM,
+    KeyN,
+    KeyO,
+    KeyP,
+    KeyQ,
+    KeyR,
+    KeyS,
+    KeyT,
+    KeyU,
+    KeyV,
+    KeyW,
+    KeyX,
+    KeyY,
+    KeyZ,
+    KeyUp,
+    KeyDown,
+    KeyLeft,
+    KeyRight,
+    KeyEnter,
+    KeySpace,
+    MouseRight,
+    MouseMiddle,
+    MouseLeft,
 };
 
-enum class EventState: int {
-    All = -1,
-    KeyReleased,
-    KeyPressed,
+/**
+ * @brief Event Key enumeration
+ */
+enum class EventState: int8_t  {
+    KeyReleased, ///< State for Key release
+    KeyPressed, ///< State for Key press
 };
 
+/**
+ * @brief Event Container
+ */
 struct Event {
+    /// Key of the Event
     EventKey key;
+
+    ///State of the Event
     EventState state;
 };
+}

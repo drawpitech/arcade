@@ -1,0 +1,23 @@
+image: alpine
+
+before_script:
+  - apk update
+  - apk add doxygen cmake make clang
+
+tests:
+  script:
+    - cmake -S . -B build
+    - cmake --build build --target doc
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+pages:
+  script:
+    - cmake -S . -B build
+    - cmake --build build --target doc
+    - mv doc/html/ public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH

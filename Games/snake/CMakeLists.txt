@@ -1,2 +1,2 @@
 set(TARGET arcade_snake)
-include(../CMakeCommon.txt)
+include(../../CMakeCommonLib.cmake)
