@@ -21,7 +21,7 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
                 .width = 1,
                 .chars = {{'x'}},
             },
-        .path = "",
+        .path = "./Games/snake/assets/fruit.png",
     });
     move(engine);
 }

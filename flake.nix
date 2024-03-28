@@ -17,6 +17,8 @@
             pkg-config
             ncurses
             sfml
+            SDL2
+            SDL2_image
           ];
           enableParallelBuilding = true;
           buildPhase = ''

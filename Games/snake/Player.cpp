@@ -23,7 +23,7 @@ Player::Player(ass::IEngine &engine)
                 .width = 1,
                 .chars = {{'o'}},
             },
-        .path = "",
+        .path = "./Games/snake/assets/snake.png",
     });
 
     grow();

@@ -29,3 +29,4 @@ add_subdirectory(Games/snake)
 
 # ↓ Renderer
 add_subdirectory(Renderer/NCurses)
+add_subdirectory(Renderer/SDL2)
