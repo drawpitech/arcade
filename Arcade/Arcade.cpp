@@ -12,7 +12,6 @@
 #include <ASS/IGame.hpp>
 #include <memory>
 
-#include "Engine.hpp"
 #include "SharedObject.hpp"
 
 gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
@@ -36,11 +35,11 @@ gg::Arcade::~Arcade() = default;
 
 int gg::Arcade::run()
 {
-    gg::Engine engine;
+    auto &engine = get_engine_singleton();
     engine.set_renderer(_renderer->get<ass::IRenderer>());
 
-    auto *game = _game->get<ass::IGame>();
-    game->run(engine);
-    delete game;
+    std::unique_ptr<ass::IGame> game{_game->get<ass::IGame>()};
+    game->run();
+    engine.set_renderer(nullptr);
     return 0;
 }

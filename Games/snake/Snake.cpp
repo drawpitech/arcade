@@ -26,8 +26,9 @@ Snake::Snake()
 
 Snake::~Snake() = default;
 
-void Snake::run(ass::IEngine &engine)
+void Snake::run()
 {
+    ass::IEngine &engine = get_engine_singleton();
     const auto interval = std::chrono::milliseconds(100);
 
     Player snake{engine};

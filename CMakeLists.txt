@@ -18,6 +18,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "debug")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -fsanitize=address,leak,undefined -fanalyzer")
 endif()
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rdynamic")
+
 # ↓ Libraries
 include(FindPkgConfig)
 add_subdirectory(lib/ASS)

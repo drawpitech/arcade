@@ -18,7 +18,7 @@ class Snake : public ass::IGame
     Snake();
     ~Snake() override;
 
-    void run(ass::IEngine &engine) final;
+    void run() final;
 };
 
 enum class Direction {
