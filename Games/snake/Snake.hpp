@@ -9,6 +9,7 @@
 
 #include <ASS/IEngine.hpp>
 #include <ASS/IGame.hpp>
+#include <queue>
 
 #include "ASS/ISprite.hpp"
 
@@ -40,15 +41,14 @@ class Player
     void move();
     bool is_dead(ass::IEngine &engine);
     void grow();
-
-    Direction get_direction();
     void set_direction(Direction direction);
 
     pos_t &get_head();
 
    private:
     std::unique_ptr<ass::ISprite> _sprite;
-    Direction _direction;
+    std::queue<Direction> _directions;
+    Direction _current_direction;
     std::vector<pos_t> _body;
 };
 

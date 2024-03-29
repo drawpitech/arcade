@@ -44,20 +44,16 @@ void Snake::run()
                     running = false;
                     break;
                 case ass::EventKey::KeyUp:
-                    if (snake.get_direction() != Direction::Down)
-                        snake.set_direction(Direction::Up);
+                    snake.set_direction(Direction::Up);
                     break;
                 case ass::EventKey::KeyDown:
-                    if (snake.get_direction() != Direction::Up)
-                        snake.set_direction(Direction::Down);
+                    snake.set_direction(Direction::Down);
                     break;
                 case ass::EventKey::KeyLeft:
-                    if (snake.get_direction() != Direction::Right)
-                        snake.set_direction(Direction::Left);
+                    snake.set_direction(Direction::Left);
                     break;
                 case ass::EventKey::KeyRight:
-                    if (snake.get_direction() != Direction::Left)
-                        snake.set_direction(Direction::Right);
+                    snake.set_direction(Direction::Right);
                     break;
                 default:
                     break;

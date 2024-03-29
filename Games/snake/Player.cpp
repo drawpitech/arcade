@@ -14,7 +14,7 @@
 #include "Snake.hpp"
 
 Player::Player(ass::IEngine &engine)
-    : _sprite(engine.create_sprite()), _direction{Direction::Right}
+    : _sprite(engine.create_sprite()), _current_direction(Direction::Right)
 {
     _sprite->set_asset({
         .sprite =
@@ -43,9 +43,18 @@ void Player::move()
     for (size_t i = _body.size() - 1; i > 0; i--)
         _body.at(i) = _body.at(i - 1);
 
+    if (!_directions.empty()) {
+        auto direction = _directions.front();
+        _directions.pop();
+
+        // Check that the snake doesn't do a 360 no scope
+        if (int(direction) / 2 != int(_current_direction) / 2)
+            _current_direction = direction;
+    }
+
     // Move the head
     auto &head = get_head();
-    switch (_direction) {
+    switch (_current_direction) {
         case Direction::Up:
             head.y -= 1;
             break;
@@ -75,14 +84,9 @@ bool Player::is_dead(ass::IEngine &engine)
     return head.x < 0 || head.x >= width || head.y < 0 || head.y >= height;
 }
 
-Direction Player::get_direction()
-{
-    return _direction;
-}
-
 void Player::set_direction(Direction direction)
 {
-    _direction = direction;
+    _directions.push(direction);
 }
 
 pos_t &Player::get_head()
