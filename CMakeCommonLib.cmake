@@ -1,5 +1,5 @@
 file(GLOB_RECURSE sources "*.cpp")
-add_library(${TARGET} SHARED ${sources})
+add_library(${TARGET} SHARED ${sources} ${EXTRA_SOURCES})
 
 target_compile_features(${TARGET} PUBLIC cxx_std_20)
 
@@ -11,3 +11,4 @@ set_target_properties(
              EXPORT_COMPILE_COMMANDS ON
              CXX_STANDARD_REQUIRED ON
              INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set(EXTRA_SOURCES "")

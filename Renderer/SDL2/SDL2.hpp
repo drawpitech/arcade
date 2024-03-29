@@ -70,6 +70,7 @@ class SDL2 : public ass::IRenderer
     void set_title(std::wstring title) final;
     void draw_sprite(ass::ISprite &sprite, void *&raw_data) final;
     void free_sprite(void *&raw_data) final;
+    void draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color) final;
 
     ass::Vector2<size_t> get_window_size() const final;
     std::vector<ass::Event> events() final;

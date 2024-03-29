@@ -137,3 +137,9 @@ void SDL2::free_sprite(void *&raw_data)
 {
     SDL_DestroyTexture(reinterpret_cast<SDL_Texture *&>(raw_data));
 }
+
+
+void SDL2::draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
+{
+    // TODO
+}

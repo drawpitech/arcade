@@ -41,6 +41,12 @@ std::vector<ass::Event> gg::Engine::events()
     return _renderer->events();
 }
 
+void gg::Engine::draw_text(
+    ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
+{
+    _renderer->draw_text(pos, text, size, color);
+}
+
 void gg::Engine::set_renderer(ass::IRenderer *renderer)
 {
     for (auto &[_, data] : _sprites)

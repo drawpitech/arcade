@@ -34,6 +34,8 @@ class Engine : public ass::IEngine
 
     std::vector<ass::Event> events() final;
 
+    void draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color) final;
+
     void set_renderer(ass::IRenderer *renderer) final;
     ass::IRenderer &get_renderer() final;
 

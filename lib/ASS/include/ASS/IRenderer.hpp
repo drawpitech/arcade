@@ -86,6 +86,8 @@ public:
      */
     virtual std::vector<Event> events() = 0;
 
+    virtual void draw_text(Vector2<float> pos, std::string text, uint size, TermColor color) = 0;
+
     IRenderer(const IRenderer &) = default;
     IRenderer(IRenderer &&) = delete;
     IRenderer &operator=(const IRenderer &) = default;

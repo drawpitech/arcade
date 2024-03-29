@@ -71,6 +71,8 @@ public:
      */
     virtual std::vector<Event> events() = 0;
 
+    virtual void draw_text(Vector2<float> pos, std::string text, uint size, TermColor color) = 0;
+
     virtual void set_renderer(ass::IRenderer *renderer) = 0;
     virtual ass::IRenderer &get_renderer() = 0;
 
