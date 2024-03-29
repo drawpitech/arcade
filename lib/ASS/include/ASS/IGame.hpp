@@ -43,7 +43,7 @@ public:
     /**
      * @brief Run the game
      */
-    virtual void run() = 0;
+    virtual void run(IEngine &) = 0;
 
     IGame(const IGame &) = default;
     IGame(IGame &&) = delete;

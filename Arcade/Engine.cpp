@@ -7,16 +7,9 @@
 
 #include "Engine.hpp"
 
-#include <ASS/IEngine.hpp>
 #include <memory>
 
 #include "Sprite.hpp"
-
-extern "C" ass::IEngine &get_engine_singleton(void)
-{
-    static gg::Engine engine{};
-    return engine;
-}
 
 gg::Engine::Engine() = default;
 gg::Engine::~Engine() = default;

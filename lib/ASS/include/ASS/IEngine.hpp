@@ -80,8 +80,3 @@ public:
     IEngine &operator=(IEngine &&) = delete;
 };
 } // namespace ass
-
-/*
- * @brief returns the game engine
- */
-extern "C" ass::IEngine &get_engine_singleton(void);
