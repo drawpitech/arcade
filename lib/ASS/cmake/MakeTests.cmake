@@ -18,6 +18,8 @@ if (MAKE_TESTS)
     add_custom_target(renderers_tests)
 
     add_custom_target(ass_tests DEPENDS games_tests renderers_tests)
+else ()
+    message(STATUS "Tests not enabled")
 endif ()
 
 function(ass_add_tests name TYPE)

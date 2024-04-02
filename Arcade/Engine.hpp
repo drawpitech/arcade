@@ -38,7 +38,7 @@ class Engine : public ass::IEngine
 
     void wait_frame(u_int8_t fps) final;
 
-    void set_renderer(std::unique_ptr<ass::IRenderer> renderer) final;
+    void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) final;
     ass::IRenderer &get_renderer() final;
 
    private:

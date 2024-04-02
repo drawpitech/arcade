@@ -82,7 +82,7 @@ public:
      */
     virtual void wait_frame(u_int8_t fps) = 0;
 
-    virtual void set_renderer(std::unique_ptr<ass::IRenderer> renderer) = 0;
+    virtual void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) = 0;
     virtual ass::IRenderer &get_renderer() = 0;
 
     IEngine(const IEngine &) = default;

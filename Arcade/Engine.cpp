@@ -52,7 +52,7 @@ void gg::Engine::wait_frame(u_int8_t fps)
     // TODO
 }
 
-void gg::Engine::set_renderer(std::unique_ptr<ass::IRenderer> renderer)
+void gg::Engine::set_renderer(std::unique_ptr<ass::IRenderer> &&renderer)
 {
     for (auto &[_, data] : _sprites)
         _renderer->free_sprite(data);
