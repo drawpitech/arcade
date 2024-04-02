@@ -18,9 +18,9 @@
 #include <ctime>
 #include <thread>
 
-extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
+extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint()
 {
-    return new Menu();
+    return std::make_unique<Menu>();
 }
 
 Menu::Menu()

@@ -14,9 +14,9 @@
 #include <chrono>
 #include <thread>
 
-extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint()
+extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint()
 {
-    return new Snake();
+    return std::make_unique<Snake>();
 }
 
 Snake::Snake()

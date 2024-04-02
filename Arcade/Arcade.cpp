@@ -39,7 +39,7 @@ int gg::Arcade::run()
     gg::Engine engine;
     engine.set_renderer(_renderer->get<ass::IRenderer>());
 
-    std::unique_ptr<ass::IGame> game{_game->get<ass::IGame>()};
+    auto game = _game->get<ass::IGame>();
     game->run(engine);
     return 0;
 }

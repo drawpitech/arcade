@@ -28,10 +28,10 @@ class SharedObject
     std::unique_ptr<void, int (*)(void *)> _handle;
 
     template <typename T>
-    T *get_symbol(const std::string &name)
+    std::unique_ptr<T> get_symbol(const std::string &name)
     {
         auto *symbol =
-            reinterpret_cast<T *(*)()>(dlsym(_handle.get(), name.c_str()));
+            reinterpret_cast<std::unique_ptr<T> (*)()>(dlsym(_handle.get(), name.c_str()));
         if (symbol == nullptr)
             throw gg::Exception(dlerror());
         return symbol();
@@ -39,7 +39,7 @@ class SharedObject
 
    public:
     template <typename T>
-    T *get();
+    std::unique_ptr<T> get();
 };
 
 }  // namespace gg

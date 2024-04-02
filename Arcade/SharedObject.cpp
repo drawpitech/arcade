@@ -17,19 +17,19 @@ gg::SharedObject::SharedObject(const std::string &path)
 gg::SharedObject::~SharedObject() = default;
 
 template <>
-ass::IGame *gg::SharedObject::get<ass::IGame>()
+std::unique_ptr<ass::IGame> gg::SharedObject::get<ass::IGame>()
 {
     return get_symbol<ass::IGame>("uwu_goofy_ahhh_game_entrypoint");
 }
 
 template <>
-ass::IRenderer *gg::SharedObject::get<ass::IRenderer>()
+std::unique_ptr<ass::IRenderer> gg::SharedObject::get<ass::IRenderer>()
 {
     return get_symbol<ass::IRenderer>("uwu_goofy_ahhh_renderer_entrypoint");
 }
 
 template <>
-ass::ISprite *gg::SharedObject::get<ass::ISprite>()
+std::unique_ptr<ass::ISprite> gg::SharedObject::get<ass::ISprite>()
 {
     return get_symbol<ass::ISprite>("uwu_goofy_ahhh_sprite_entrypoint");
 }

@@ -47,12 +47,17 @@ void gg::Engine::draw_text(
     _renderer->draw_text(pos, text, size, color);
 }
 
-void gg::Engine::set_renderer(ass::IRenderer *renderer)
+void gg::Engine::wait_frame(u_int8_t fps)
+{
+    // TODO
+}
+
+void gg::Engine::set_renderer(std::unique_ptr<ass::IRenderer> renderer)
 {
     for (auto &[_, data] : _sprites)
         _renderer->free_sprite(data);
     _sprites.clear();
-    _renderer.reset(renderer);
+    _renderer = std::move(renderer);
 }
 
 ass::IRenderer &gg::Engine::get_renderer()

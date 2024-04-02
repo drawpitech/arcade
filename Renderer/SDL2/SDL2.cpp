@@ -12,11 +12,10 @@
 
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
-#include <iostream>
 
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint()
+extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 {
-    return new SDL2();
+    return std::make_unique<SDL2>();
 }
 
 SDL2::SDL2() : _window(nullptr), _renderer(nullptr)

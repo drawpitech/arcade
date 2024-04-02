@@ -13,9 +13,9 @@
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
 
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint()
+extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 {
-    return new NCurses();
+    return std::make_unique<NCurses>();
 }
 
 NCurses::NCurses()
