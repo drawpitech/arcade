@@ -14,8 +14,11 @@
 
 #pragma once
 
+#include <exception>
+#include <memory>
 #include <string>
 
+#include "Events.hpp"
 #include "ISprite.hpp"
 
 /**
@@ -32,7 +35,7 @@ namespace ass {
  * @ingroup renderer
  * @exception IRenderer::Exception Renderer’s exceptions
  */
-class IRenderer { // NOLINT(cppcoreguidelines-special-member-functions)
+class IRenderer {
 public:
     /**
      * @brief Renderer Exception
@@ -40,12 +43,13 @@ public:
      */
     class Exception: public std::exception {};
 
+    IRenderer() = default;
     virtual ~IRenderer() = default;
 
     /**
      * @brief Flushes current renderer state to user
      */
-    virtual void refresh()= 0;
+    virtual void refresh() = 0;
 
     /**
      * @brief Fill entire window with color
@@ -58,14 +62,45 @@ public:
      * @param[in] title title of the window
      */
     virtual void set_title(std::wstring title) = 0;
+
+    /**
+     * @brief Draw a sprite to the window (should NOT be used outside of the Engine)
+     * @param[in] sprite sprite to display
+     * @param[in] raw_data sprite internal used by the renderer
+     */
+    virtual void draw_sprite(ISprite &sprite, void *&raw_data) = 0;
+
+    /**
+     * @brief Free the internal sprite's data (should NOT be used outside of the Engine)
+     * @param[in] raw_data sprite internal by for the renderer
+     */
+    virtual void free_sprite(void *&raw_data) = 0;
+
+    /**
+     * @brief Get the window size
+     * @return window size (width, height)
+     */
+    virtual Vector2<size_t> get_window_size() const = 0;
+
+    /**
+     * @brief get last events from engine
+     * @return array of Event
+     */
+    virtual std::vector<Event> events() = 0;
+
+    IRenderer(const IRenderer &) = default;
+    IRenderer(IRenderer &&) = delete;
+    IRenderer &operator=(const IRenderer &) = default;
+    IRenderer &operator=(IRenderer &&) = delete;
 };
+
 } // namespace ass
 
 /**
  * @brief Arcade Renderer shared library entrypoint
  * @relates ass::IRenderer
  * @ingroup renderer
- * @attention Must be defined and return a pointer to a final class derived from IRenderer
- * @return pointer to a newly allocated IRenderer derived class
+ * @attention Must be defined and return an unique pointer to a final class derived from IRenderer
+ * @return unique pointer to a newly allocated IRenderer derived class
  */
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint(void);
+extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint(void);

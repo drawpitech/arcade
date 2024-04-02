@@ -17,6 +17,9 @@
 #pragma once
 
 #include <exception>
+#include <memory>
+
+#include "IEngine.hpp"
 
 namespace ass {
 
@@ -27,28 +30,35 @@ namespace ass {
  * @ingroup game
  * @exception IGame::Exception Game’s exceptions
  */
-class IGame { // NOLINT(cppcoreguidelines-special-member-functions)
+class IGame {
 public:
-    virtual ~IGame() = default;
-
     /**
      * @brief Game Exception
      * @details Base class for Games’s scoped exceptions
      */
     class Exception: public std::exception {};
 
+    IGame() = default;
+    virtual ~IGame() = default;
+
     /**
      * @brief Run the game
      */
-    virtual void run() = 0;
+    virtual void run(IEngine &engine) = 0;
+
+    IGame(const IGame &) = default;
+    IGame(IGame &&) = delete;
+    IGame &operator=(const IGame &) = default;
+    IGame &operator=(IGame &&) = delete;
 };
-} // namespace ass
+
+}  // namespace ass
 
 /**
  * @brief Arcade Game shared library entrypoint
  * @relates ass::IGame
  * @ingroup game
- * @attention Must be defined a return a pointer to a final class derived from IGame
- * @return pointer to a newly allocated IGame derived class
+ * @attention Must be defined a return an unique pointer to a final class derived from IGame
+ * @return unique pointer to a newly allocated IGame derived class
  */
-extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint(void);
+extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint(void);

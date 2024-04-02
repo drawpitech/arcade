@@ -18,6 +18,8 @@
 #pragma once
 
 #include <sys/types.h>
+
+#include <string>
 #include <vector>
 
 #include "Vector2.hpp"
@@ -53,12 +55,6 @@ enum class TermColor: xterm_color_t {
 };
 
 /**
- * @brief Type for binary content of sprite image targeting 2D renderers
- * @ingroup sprite
- */
-using image_sprite_t = std::vector<std::byte>;
-
-/**
  * @brief Type for color content of sprite targeting terminal renderers
  * @ingroup sprite
  */
@@ -89,10 +85,7 @@ struct SpriteAssets {
         ascii_color_array_t bg_colors; ///< Color of the background of each characters
     } sprite; ///< ASCII sprite
 
-    /**
-     * @brief Structure representing an Image sprite
-     */
-    image_sprite_t image;
+    std::string path; ///< Path of the Image sprite
 };
 
 /**
@@ -101,7 +94,7 @@ struct SpriteAssets {
  * @ingroup sprite
  * @exception ISprite::Exception Sprite’s exceptions
  */
-class ISprite { // NOLINT(cppcoreguidelines-special-member-functions)
+class ISprite {
 public:
     /**
      * @brief Sprite Exception
@@ -109,13 +102,19 @@ public:
      */
     class Exception: public std::exception {};
 
+    ISprite() = default;
     virtual ~ISprite() = default;
 
     /**
      * @brief Set the asset of the sprite
      * @param[in] asset asset to set
      */
-    virtual void set_asset(SpriteAssets asset);
+    virtual void set_asset(SpriteAssets asset) = 0;
+
+    /**
+     * @brief Get the asset of the sprite
+     */
+    virtual SpriteAssets &get_asset() = 0;
 
     /**
      * @brief Move the sprite to a new position
@@ -129,9 +128,10 @@ public:
      */
     virtual Vector2<float> position() = 0;
 
-    /**
-     * @brief Draw the sprite
-     */
-    virtual void draw() = 0;
+    ISprite(const ISprite &) = default;
+    ISprite(ISprite &&) = default;
+    ISprite &operator=(const ISprite &) = default;
+    ISprite &operator=(ISprite &&) = default;
 };
+
 } // namespace ass
