@@ -23,6 +23,13 @@
 
 namespace ass {
 
+enum class RunStatus {
+    Exit,
+    Restart,
+    NextGame,
+    ShowMenu,
+};
+
 /**
  * @interface IGame
  * @brief Game Interface
@@ -44,7 +51,7 @@ public:
     /**
      * @brief Run the game
      */
-    virtual void run(IEngine &engine) = 0;
+    virtual RunStatus run(IEngine &engine) = 0;
 
     IGame(const IGame &) = default;
     IGame(IGame &&) = delete;

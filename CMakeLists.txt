@@ -27,7 +27,7 @@ add_subdirectory(Arcade)
 
 # ↓ Games
 add_subdirectory(Games/snake)
-add_subdirectory(Games/menu)
+# add_subdirectory(Games/menu)
 
 # ↓ Renderer
 add_subdirectory(Renderer/NCurses)

@@ -85,6 +85,11 @@ public:
     virtual void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) = 0;
     virtual ass::IRenderer &get_renderer() = 0;
 
+    /**
+     * @brief hot switch the renderer used
+     */
+    virtual void next_renderer() = 0;
+
     IEngine(const IEngine &) = default;
     IEngine(IEngine &&) = delete;
     IEngine &operator=(const IEngine &) = default;

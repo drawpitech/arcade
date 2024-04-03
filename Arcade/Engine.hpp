@@ -41,6 +41,8 @@ class Engine : public ass::IEngine
     void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) final;
     ass::IRenderer &get_renderer() final;
 
+    void next_renderer() final;
+
    private:
     std::unique_ptr<ass::IRenderer> _renderer;
     std::map<ass::ISprite *, void *> _sprites;

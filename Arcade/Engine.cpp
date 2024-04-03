@@ -66,3 +66,8 @@ ass::IRenderer &gg::Engine::get_renderer()
         throw gg::Exception("ono no renderer loaded");
     return *_renderer;
 }
+
+void gg::Engine::next_renderer()
+{
+    // TODO
+}
