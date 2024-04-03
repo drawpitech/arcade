@@ -12,6 +12,7 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 #include <chrono>
+#include <iostream>
 #include <thread>
 
 extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint()
@@ -43,6 +44,8 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
                     return ass::RunStatus::Exit;
                 case ass::EventKey::KeyR:
                     return ass::RunStatus::Restart;
+                case ass::EventKey::KeyM:
+                    return ass::RunStatus::ShowMenu;
                 case ass::EventKey::KeyUp:
                     snake.set_direction(Direction::Up);
                     break;

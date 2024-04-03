@@ -13,6 +13,7 @@
 #include <memory>
 
 #include "Engine.hpp"
+#include "Menu.hpp"
 #include "SharedObject.hpp"
 
 gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
@@ -39,17 +40,20 @@ int gg::Arcade::run()
     gg::Engine engine;
     engine.set_renderer(_renderer->get<ass::IRenderer>());
 
-    auto game = _game->get<ass::IGame>();
-    bool running = true;
-    while (running) {
-        switch (game->run(engine)) {
+    auto game_instance = _game->get<ass::IGame>();
+
+    for (bool running = true; running;) {
+        switch (game_instance->run(engine)) {
             case ass::RunStatus::Exit:
                 running = false;
                 break;
             case ass::RunStatus::Restart:
-                game = _game->get<ass::IGame>();
+                game_instance = _game->get<ass::IGame>();
                 break;
             case ass::RunStatus::ShowMenu:
+                gg::Menu::show(engine, _game, _renderer);
+                game_instance = _game->get<ass::IGame>();
+                break;
             case ass::RunStatus::NextGame:
                 throw std::runtime_error("Not implemented");
         }

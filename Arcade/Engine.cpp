@@ -54,8 +54,9 @@ void gg::Engine::wait_frame(u_int8_t fps)
 
 void gg::Engine::set_renderer(std::unique_ptr<ass::IRenderer> &&renderer)
 {
-    for (auto &[_, data] : _sprites)
-        _renderer->free_sprite(data);
+    if (_renderer != nullptr)
+        for (auto &[_, data] : _sprites)
+            _renderer->free_sprite(data);
     _sprites.clear();
     _renderer = std::move(renderer);
 }

@@ -49,7 +49,6 @@ NCurses::NCurses()
 
 NCurses::~NCurses()
 {
-    delwin(stdscr);
     endwin();
 }
 
