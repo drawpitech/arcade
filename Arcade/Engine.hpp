@@ -13,8 +13,11 @@
 #include <memory>
 
 #include "Exception.hpp"
+#include "SharedObject.hpp"
 
 namespace gg {
+
+using SOMap = std::map<std::string, gg::SharedObject>;
 
 class Engine : public ass::IEngine
 {
@@ -34,7 +37,9 @@ class Engine : public ass::IEngine
 
     std::vector<ass::Event> events() final;
 
-    void draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color) final;
+    void draw_text(
+        ass::Vector2<float> pos, std::string text, uint size,
+        ass::TermColor color) final;
 
     void wait_frame(u_int8_t fps) final;
 
@@ -43,9 +48,14 @@ class Engine : public ass::IEngine
 
     void next_renderer() final;
 
+    static std::pair<SOMap, SOMap> get_shared_objects();
+
    private:
     std::unique_ptr<ass::IRenderer> _renderer;
     std::map<ass::ISprite *, void *> _sprites;
+
+    static void open_shared_object(
+        const std::string &path, std::pair<SOMap, SOMap> &items);
 };
 
 }  // namespace gg

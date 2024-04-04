@@ -7,6 +7,8 @@
 
 #include "Engine.hpp"
 
+#include <filesystem>
+#include <iostream>
 #include <memory>
 
 #include "Sprite.hpp"
@@ -71,4 +73,39 @@ ass::IRenderer &gg::Engine::get_renderer()
 void gg::Engine::next_renderer()
 {
     // TODO
+}
+
+std::pair<gg::SOMap, gg::SOMap> gg::Engine::get_shared_objects()
+{
+    std::pair<gg::SOMap, gg::SOMap> items;
+
+    for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
+        auto path = entry.path().string();
+        try {
+            gg::Engine::open_shared_object(path, items);
+        } catch (const std::exception &e) {
+            std::cerr << "While loading `" << path << "`: " << e.what()
+                      << std::endl;
+            continue;
+        }
+    }
+
+    if (items.first.empty() || items.second.empty())
+        throw std::runtime_error("No game or renderers found :/");
+    return items;
+}
+
+void gg::Engine::open_shared_object(
+    const std::string &path, std::pair<SOMap, SOMap> &items)
+{
+    gg::SharedObject so(path);
+
+    if (so.is_such<ass::IGame>()) {
+        items.first.insert({path, std::move(so)});
+        return;
+    }
+    if (so.is_such<ass::IRenderer>()) {
+        items.second.insert({path, std::move(so)});
+        return;
+    }
 }

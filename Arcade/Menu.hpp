@@ -15,8 +15,6 @@
 
 namespace gg {
 
-using SOMap = std::map<std::string, gg::SharedObject>;
-
 class Menu
 {
    public:
@@ -26,8 +24,6 @@ class Menu
         std::unique_ptr<gg::SharedObject> &renderer);
 
    private:
-    static void open_shared_object(
-        const std::string &path, SOMap &games, SOMap &renderers);
     static std::string get_selection(gg::Engine &engine, SOMap &items);
 };
 

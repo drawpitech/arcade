@@ -14,57 +14,24 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 #include <algorithm>
-#include <exception>
-#include <filesystem>
-#include <iostream>
-#include <map>
 #include <thread>
 
+#include "Engine.hpp"
 #include "SharedObject.hpp"
 
 void gg::Menu::show(
     gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game,
     std::unique_ptr<gg::SharedObject> &renderer)
 {
-    std::map<std::string, gg::SharedObject> games;
-    std::map<std::string, gg::SharedObject> renderers;
+    auto items = gg::Engine::get_shared_objects();
 
-    for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
-        auto path = entry.path().string();
-        try {
-            Menu::open_shared_object(path, games, renderers);
-        } catch (const std::exception &e) {
-            std::cerr << "While loading `" << path << "`: " << e.what()
-                      << std::endl;
-            continue;
-        }
-    }
-
-    if (games.empty() || renderers.empty())
-        throw std::runtime_error("No game or renderers found :/");
-
-    game =
-        std::make_unique<gg::SharedObject>(Menu::get_selection(engine, games));
+    game = std::make_unique<gg::SharedObject>(
+        Menu::get_selection(engine, items.first));
 
     auto new_renderer = std::make_unique<gg::SharedObject>(
-        Menu::get_selection(engine, renderers));
+        Menu::get_selection(engine, items.second));
     engine.set_renderer(new_renderer->get<ass::IRenderer>());
     renderer = std::move(new_renderer);
-}
-
-void gg::Menu::open_shared_object(
-    const std::string &path, SOMap &games, SOMap &renderers)
-{
-    gg::SharedObject so(path);
-
-    if (so.is_such<ass::IGame>()) {
-        games.insert({path, std::move(so)});
-        return;
-    }
-    if (so.is_such<ass::IRenderer>()) {
-        renderers.insert({path, std::move(so)});
-        return;
-    }
 }
 
 using Color = ass::TermColor;
