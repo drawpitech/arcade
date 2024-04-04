@@ -46,6 +46,9 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
                     return ass::RunStatus::Restart;
                 case ass::EventKey::KeyM:
                     return ass::RunStatus::ShowMenu;
+                case ass::EventKey::KeyN:
+                    engine.next_renderer();
+                    break;
                 case ass::EventKey::KeyUp:
                     snake.set_direction(Direction::Up);
                     break;

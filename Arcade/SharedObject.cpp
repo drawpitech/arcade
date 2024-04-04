@@ -36,6 +36,11 @@ gg::SharedObject &gg::SharedObject::operator=(const SharedObject &other)
 
 gg::SharedObject::~SharedObject() = default;
 
+std::string gg::SharedObject::get_path()
+{
+    return _path;
+}
+
 const std::string GAME_ENTRYPOINT = "uwu_goofy_ahhh_game_entrypoint";
 const std::string REND_ENTRYPOINT = "uwu_goofy_ahhh_renderer_entrypoint";
 

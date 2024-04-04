@@ -27,6 +27,8 @@ class SharedObject
     SharedObject(std::string path);
     ~SharedObject();
 
+    std::string get_path();
+
     SharedObject(const SharedObject &);
     SharedObject(SharedObject &&) = default;
     SharedObject &operator=(const SharedObject &);

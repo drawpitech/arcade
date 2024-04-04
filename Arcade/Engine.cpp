@@ -7,6 +7,7 @@
 
 #include "Engine.hpp"
 
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -86,7 +87,27 @@ ass::IRenderer &gg::Engine::get_renderer()
 
 void gg::Engine::next_renderer()
 {
-    // TODO
+    std::vector<std::string> rends = gg::Engine::get_shared_objects().second;
+
+    if (rends.empty())
+        throw gg::Exception("No renderers found");
+
+    if (_renderer_so == nullptr) {
+        set_renderer(rends.at(0));
+        return;
+    }
+
+    std::sort(rends.begin(), rends.end());
+    auto it = std::find(rends.begin(), rends.end(), _renderer_so->get_path());
+    if (it == rends.end()) {
+        set_renderer(rends.at(0));
+        return;
+    }
+
+    size_t index = it - rends.begin() + 1;
+    if (index >= rends.size())
+        index = 0;
+    set_renderer(rends.at(index));
 }
 
 std::pair<std::vector<std::string>, std::vector<std::string>>
