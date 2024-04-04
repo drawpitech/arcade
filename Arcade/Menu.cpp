@@ -100,10 +100,10 @@ std::string gg::Menu::get_selection(gg::Engine &engine, SOMap &items)
             index = std::clamp(index, 0, int(keys.size()) - 1);
         }
 
-        engine.clear(Color::Black);
+        engine.clear(Color::White);
         for (size_t i = 0; i < keys.size(); i++) {
             auto color = (i == index) ? Color::Blue : Color::Black;
-            engine.draw_text({5, 5 + float(i)}, keys.at(i), 12, color);
+            engine.draw_text({5, 5 + float(i)}, keys.at(i), 24, color);
         }
         engine.refresh();
         std::this_thread::sleep_for(interval);
