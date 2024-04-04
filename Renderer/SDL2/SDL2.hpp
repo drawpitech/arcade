@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <ASS/Events.hpp>
 #include <ASS/IEngine.hpp>
@@ -16,39 +16,42 @@
 #include <map>
 #include <string>
 
-static const std::map<SDL_Scancode, ass::EventKey> KEYS = {
-    { SDL_SCANCODE_A, ass::EventKey::KeyA },
-    { SDL_SCANCODE_B, ass::EventKey::KeyB },
-    { SDL_SCANCODE_C, ass::EventKey::KeyC },
-    { SDL_SCANCODE_D, ass::EventKey::KeyD },
-    { SDL_SCANCODE_E, ass::EventKey::KeyE },
-    { SDL_SCANCODE_F, ass::EventKey::KeyF },
-    { SDL_SCANCODE_G, ass::EventKey::KeyG },
-    { SDL_SCANCODE_H, ass::EventKey::KeyH },
-    { SDL_SCANCODE_I, ass::EventKey::KeyI },
-    { SDL_SCANCODE_J, ass::EventKey::KeyJ },
-    { SDL_SCANCODE_K, ass::EventKey::KeyK },
-    { SDL_SCANCODE_L, ass::EventKey::KeyL },
-    { SDL_SCANCODE_M, ass::EventKey::KeyM },
-    { SDL_SCANCODE_N, ass::EventKey::KeyN },
-    { SDL_SCANCODE_O, ass::EventKey::KeyO },
-    { SDL_SCANCODE_P, ass::EventKey::KeyP },
-    { SDL_SCANCODE_Q, ass::EventKey::KeyQ },
-    { SDL_SCANCODE_R, ass::EventKey::KeyR },
-    { SDL_SCANCODE_S, ass::EventKey::KeyS },
-    { SDL_SCANCODE_T, ass::EventKey::KeyT },
-    { SDL_SCANCODE_U, ass::EventKey::KeyU },
-    { SDL_SCANCODE_V, ass::EventKey::KeyV },
-    { SDL_SCANCODE_W, ass::EventKey::KeyW },
-    { SDL_SCANCODE_X, ass::EventKey::KeyX },
-    { SDL_SCANCODE_Y, ass::EventKey::KeyY },
-    { SDL_SCANCODE_Z, ass::EventKey::KeyZ },
-    { SDL_SCANCODE_UP, ass::EventKey::KeyUp },
-    { SDL_SCANCODE_DOWN, ass::EventKey::KeyDown },
-    { SDL_SCANCODE_LEFT, ass::EventKey::KeyLeft },
-    { SDL_SCANCODE_RIGHT, ass::EventKey::KeyRight },
-    { SDL_SCANCODE_RETURN, ass::EventKey::KeyEnter },
-    { SDL_SCANCODE_SPACE, ass::EventKey::KeySpace },
+
+#include <SDL2/SDL_keycode.h>
+
+static const std::map<SDL_Keycode, ass::EventKey> KEYS = {
+    { SDLK_a, ass::EventKey::KeyA },
+    { SDLK_b, ass::EventKey::KeyB },
+    { SDLK_c, ass::EventKey::KeyC },
+    { SDLK_d, ass::EventKey::KeyD },
+    { SDLK_e, ass::EventKey::KeyE },
+    { SDLK_f, ass::EventKey::KeyF },
+    { SDLK_g, ass::EventKey::KeyG },
+    { SDLK_h, ass::EventKey::KeyH },
+    { SDLK_i, ass::EventKey::KeyI },
+    { SDLK_j, ass::EventKey::KeyJ },
+    { SDLK_k, ass::EventKey::KeyK },
+    { SDLK_l, ass::EventKey::KeyL },
+    { SDLK_m, ass::EventKey::KeyM },
+    { SDLK_n, ass::EventKey::KeyN },
+    { SDLK_o, ass::EventKey::KeyO },
+    { SDLK_p, ass::EventKey::KeyP },
+    { SDLK_q, ass::EventKey::KeyQ },
+    { SDLK_r, ass::EventKey::KeyR },
+    { SDLK_s, ass::EventKey::KeyS },
+    { SDLK_t, ass::EventKey::KeyT },
+    { SDLK_u, ass::EventKey::KeyU },
+    { SDLK_v, ass::EventKey::KeyV },
+    { SDLK_w, ass::EventKey::KeyW },
+    { SDLK_x, ass::EventKey::KeyX },
+    { SDLK_y, ass::EventKey::KeyY },
+    { SDLK_z, ass::EventKey::KeyZ },
+    { SDLK_UP, ass::EventKey::KeyUp },
+    { SDLK_DOWN, ass::EventKey::KeyDown },
+    { SDLK_LEFT, ass::EventKey::KeyLeft },
+    { SDLK_RIGHT, ass::EventKey::KeyRight },
+    { SDLK_RETURN, ass::EventKey::KeyEnter },
+    { SDLK_SPACE, ass::EventKey::KeySpace },
     /* { 0, ass::EventKey::MouseRight }, */
     /* { 0, ass::EventKey::MouseMiddle }, */
     /* { 0, ass::EventKey::MouseLeft } */

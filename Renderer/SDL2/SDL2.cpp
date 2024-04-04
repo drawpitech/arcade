@@ -7,8 +7,10 @@
 
 #include "SDL2.hpp"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_keycode.h>
 
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
@@ -107,6 +109,7 @@ std::vector<ass::Event> SDL2::events()
     std::vector<ass::Event> events{};
 
     for (SDL_Event event; SDL_PollEvent(&event) == 1;) {
+        SDL_Keycode k = 0;
         switch (event.type) {
             case SDL_QUIT:
                 events.push_back(
@@ -114,16 +117,14 @@ std::vector<ass::Event> SDL2::events()
                 break;
 
             case SDL_KEYDOWN:
-                if (KEYS.contains(event.key.keysym.scancode))
-                    events.push_back(
-                        {KEYS.at(event.key.keysym.scancode),
-                         ass::EventState::KeyPressed});
+                k = SDL_GetKeyFromScancode(event.key.keysym.scancode);
+                if (KEYS.contains(k))
+                    events.push_back({KEYS.at(k), ass::EventState::KeyPressed});
                 break;
             case SDL_KEYUP:
-                if (KEYS.contains(event.key.keysym.scancode))
-                    events.push_back(
-                        {KEYS.at(event.key.keysym.scancode),
-                         ass::EventState::KeyReleased});
+                k = SDL_GetKeyFromScancode(event.key.keysym.scancode);
+                if (KEYS.contains(k))
+                    events.push_back({KEYS.at(k), ass::EventState::KeyReleased});
                 break;
             default:
                 break;
@@ -137,8 +138,8 @@ void SDL2::free_sprite(void *&raw_data)
     SDL_DestroyTexture(reinterpret_cast<SDL_Texture *&>(raw_data));
 }
 
-
-void SDL2::draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
+void SDL2::draw_text(
+    ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
 {
     // TODO
 }
