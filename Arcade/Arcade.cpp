@@ -49,6 +49,9 @@ int gg::Arcade::run()
                 break;
             case ass::RunStatus::Restart:
                 game_instance = _game->get<ass::IGame>();
+
+                // while we don't have a `engine::clear_spites()`
+                engine.set_renderer(_renderer->get<ass::IRenderer>());
                 break;
             case ass::RunStatus::ShowMenu:
                 gg::Menu::show(engine, _game, _renderer);
