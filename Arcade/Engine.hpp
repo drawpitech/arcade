@@ -17,8 +17,6 @@
 
 namespace gg {
 
-using SOMap = std::map<std::string, gg::SharedObject>;
-
 class Engine : public ass::IEngine
 {
    public:
@@ -43,19 +41,26 @@ class Engine : public ass::IEngine
 
     void wait_frame(u_int8_t fps) final;
 
-    void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) final;
+    void clear_sprites();
+
+    // deprecated do not use
+    void set_renderer(std::unique_ptr<ass::IRenderer> && /**/) final {}
+    void set_renderer(std::string path);  // vastly superior
     ass::IRenderer &get_renderer() final;
 
     void next_renderer() final;
 
-    static std::pair<SOMap, SOMap> get_shared_objects();
+    static std::pair<std::vector<std::string>, std::vector<std::string>>
+    get_shared_objects();
 
    private:
     std::unique_ptr<ass::IRenderer> _renderer;
     std::map<ass::ISprite *, void *> _sprites;
+    std::unique_ptr<gg::SharedObject> _renderer_so;
 
     static void open_shared_object(
-        const std::string &path, std::pair<SOMap, SOMap> &items);
+        const std::string &path,
+        std::pair<std::vector<std::string>, std::vector<std::string>> &items);
 };
 
 }  // namespace gg

@@ -30,7 +30,6 @@ gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
         throw gg::Exception("Missing arguments");
 
     _game = std::make_unique<gg::SharedObject>(_args.getGame());
-    _renderer = std::make_unique<gg::SharedObject>(_args.getRenderer());
 }
 
 gg::Arcade::~Arcade() = default;
@@ -38,7 +37,7 @@ gg::Arcade::~Arcade() = default;
 int gg::Arcade::run()
 {
     gg::Engine engine;
-    engine.set_renderer(_renderer->get<ass::IRenderer>());
+    engine.set_renderer(_args.getRenderer());
 
     auto game_instance = _game->get<ass::IGame>();
 
@@ -49,12 +48,10 @@ int gg::Arcade::run()
                 break;
             case ass::RunStatus::Restart:
                 game_instance = _game->get<ass::IGame>();
-
-                // while we don't have a `engine::clear_spites()`
-                engine.set_renderer(_renderer->get<ass::IRenderer>());
+                engine.clear_sprites();
                 break;
             case ass::RunStatus::ShowMenu:
-                gg::Menu::show(engine, _game, _renderer);
+                gg::Menu::show(engine, _game);
                 game_instance = _game->get<ass::IGame>();
                 break;
             case ass::RunStatus::NextGame:

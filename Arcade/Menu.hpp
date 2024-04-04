@@ -20,11 +20,11 @@ class Menu
    public:
     Menu() = default;
     static void show(
-        gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game,
-        std::unique_ptr<gg::SharedObject> &renderer);
+        gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game);
 
    private:
-    static std::string get_selection(gg::Engine &engine, SOMap &items);
+    static std::string get_selection(
+        gg::Engine &engine, std::vector<std::string> &items);
 };
 
 }  // namespace gg

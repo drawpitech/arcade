@@ -35,7 +35,6 @@ class Arcade
    private:
     Args _args;
     std::unique_ptr<gg::SharedObject> _game;
-    std::unique_ptr<gg::SharedObject> _renderer;
 };
 
 }  // namespace gg

@@ -10,11 +10,17 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <utility>
 
+#include "SharedObject.hpp"
 #include "Sprite.hpp"
 
 gg::Engine::Engine() = default;
-gg::Engine::~Engine() = default;
+
+gg::Engine::~Engine()
+{
+    _renderer.reset(nullptr);
+}
 
 std::unique_ptr<ass::ISprite> gg::Engine::create_sprite()
 {
@@ -54,13 +60,21 @@ void gg::Engine::wait_frame(u_int8_t fps)
     // TODO
 }
 
-void gg::Engine::set_renderer(std::unique_ptr<ass::IRenderer> &&renderer)
+void gg::Engine::clear_sprites()
 {
     if (_renderer != nullptr)
         for (auto &[_, data] : _sprites)
             _renderer->free_sprite(data);
     _sprites.clear();
-    _renderer = std::move(renderer);
+}
+
+void gg::Engine::set_renderer(std::string path)
+{
+    clear_sprites();
+
+    auto new_renderer = std::make_unique<gg::SharedObject>(std::move(path));
+    _renderer = std::move(new_renderer->get<ass::IRenderer>());
+    _renderer_so = std::move(new_renderer);
 }
 
 ass::IRenderer &gg::Engine::get_renderer()
@@ -75,9 +89,10 @@ void gg::Engine::next_renderer()
     // TODO
 }
 
-std::pair<gg::SOMap, gg::SOMap> gg::Engine::get_shared_objects()
+std::pair<std::vector<std::string>, std::vector<std::string>>
+gg::Engine::get_shared_objects()
 {
-    std::pair<gg::SOMap, gg::SOMap> items;
+    std::pair<std::vector<std::string>, std::vector<std::string>> items;
 
     for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
         auto path = entry.path().string();
@@ -96,16 +111,17 @@ std::pair<gg::SOMap, gg::SOMap> gg::Engine::get_shared_objects()
 }
 
 void gg::Engine::open_shared_object(
-    const std::string &path, std::pair<SOMap, SOMap> &items)
+    const std::string &path,
+    std::pair<std::vector<std::string>, std::vector<std::string>> &items)
 {
     gg::SharedObject so(path);
 
     if (so.is_such<ass::IGame>()) {
-        items.first.insert({path, std::move(so)});
+        items.first.push_back(path);
         return;
     }
     if (so.is_such<ass::IRenderer>()) {
-        items.second.insert({path, std::move(so)});
+        items.second.push_back(path);
         return;
     }
 }

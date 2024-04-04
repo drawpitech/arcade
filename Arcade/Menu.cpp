@@ -19,32 +19,22 @@
 #include "Engine.hpp"
 #include "SharedObject.hpp"
 
-void gg::Menu::show(
-    gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game,
-    std::unique_ptr<gg::SharedObject> &renderer)
+void gg::Menu::show(gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game)
 {
     auto items = gg::Engine::get_shared_objects();
 
     game = std::make_unique<gg::SharedObject>(
         Menu::get_selection(engine, items.first));
-
-    auto new_renderer = std::make_unique<gg::SharedObject>(
-        Menu::get_selection(engine, items.second));
-    engine.set_renderer(new_renderer->get<ass::IRenderer>());
-    renderer = std::move(new_renderer);
+    engine.set_renderer(Menu::get_selection(engine, items.second));
 }
 
 using Color = ass::TermColor;
 using Key = ass::EventKey;
 
-std::string gg::Menu::get_selection(gg::Engine &engine, SOMap &items)
+std::string gg::Menu::get_selection(
+    gg::Engine &engine, std::vector<std::string> &items)
 {
     const auto interval = std::chrono::milliseconds(100);
-
-    std::vector<std::string> keys;
-    keys.reserve(items.size());
-    for (const auto &[k, _] : items)
-        keys.push_back(k);
 
     int index = 0;
     while (true) {
@@ -61,17 +51,17 @@ std::string gg::Menu::get_selection(gg::Engine &engine, SOMap &items)
                     index += 1;
                     break;
                 case Key::KeyEnter:
-                    return keys.at(index);
+                    return items.at(index);
                 default:
                     break;
             }
-            index = std::clamp(index, 0, int(keys.size()) - 1);
+            index = std::clamp(index, 0, int(items.size()) - 1);
         }
 
         engine.clear(Color::White);
-        for (size_t i = 0; i < keys.size(); i++) {
+        for (size_t i = 0; i < items.size(); i++) {
             auto color = (i == index) ? Color::Blue : Color::Black;
-            engine.draw_text({5, 5 + float(i)}, keys.at(i), 24, color);
+            engine.draw_text({5, 5 + float(i)}, items.at(i), 24, color);
         }
         engine.refresh();
         std::this_thread::sleep_for(interval);
