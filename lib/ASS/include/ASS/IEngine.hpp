@@ -71,8 +71,24 @@ public:
      */
     virtual std::vector<Event> events() = 0;
 
-    virtual void set_renderer(ass::IRenderer *renderer) = 0;
+    /**
+     * @copydoc IRenderer::draw_text
+     */
+    virtual void draw_text(Vector2<float> pos, std::string text, uint size, TermColor color) = 0;
+
+    /**
+     * @brief sleep until the next frame
+     * @param fps frame rate per seconds
+     */
+    virtual void wait_frame(u_int8_t fps) = 0;
+
+    virtual void set_renderer(std::unique_ptr<ass::IRenderer> &&renderer) = 0;
     virtual ass::IRenderer &get_renderer() = 0;
+
+    /**
+     * @brief hot switch the renderer used
+     */
+    virtual void next_renderer() = 0;
 
     IEngine(const IEngine &) = default;
     IEngine(IEngine &&) = delete;

@@ -13,9 +13,9 @@
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
 
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint()
+extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 {
-    return new NCurses();
+    return std::make_unique<NCurses>();
 }
 
 NCurses::NCurses()
@@ -26,11 +26,29 @@ NCurses::NCurses()
     curs_set(0);
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
+
+    // Init colors
+    start_color();
+    init_pair(int(ass::TermColor::Black), COLOR_BLACK, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Maroon), COLOR_BLACK, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Green), COLOR_GREEN, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Olive), COLOR_GREEN, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Navy), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Purple), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Teal), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Silver), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Grey), COLOR_WHITE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Red), COLOR_RED, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Lime), COLOR_GREEN, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Yellow), COLOR_YELLOW, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Blue), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Fuchsia), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::Aqua), COLOR_BLUE, COLOR_BLACK);
+    init_pair(int(ass::TermColor::White), COLOR_WHITE, COLOR_BLACK);
 }
 
 NCurses::~NCurses()
 {
-    delwin(stdscr);
     endwin();
 }
 
@@ -75,6 +93,15 @@ std::vector<ass::Event> NCurses::events()
         return {{KEYS.at(key), ass::EventState::KeyPressed}};
 
     return {};
+}
+
+void NCurses::draw_text(
+    ass::Vector2<float> pos, std::string text, uint /*size*/,
+    ass::TermColor color)
+{
+    attron(COLOR_PAIR(int(color)));
+    mvaddstr(pos.y, pos.x, text.c_str());
+    attron(COLOR_PAIR(int(ass::TermColor::White)));
 }
 
 void NCurses::free_sprite(void *&raw_data)

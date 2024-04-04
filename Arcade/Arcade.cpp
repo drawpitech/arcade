@@ -13,6 +13,7 @@
 #include <memory>
 
 #include "Engine.hpp"
+#include "Menu.hpp"
 #include "SharedObject.hpp"
 
 gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
@@ -29,7 +30,6 @@ gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
         throw gg::Exception("Missing arguments");
 
     _game = std::make_unique<gg::SharedObject>(_args.getGame());
-    _renderer = std::make_unique<gg::SharedObject>(_args.getRenderer());
 }
 
 gg::Arcade::~Arcade() = default;
@@ -37,9 +37,26 @@ gg::Arcade::~Arcade() = default;
 int gg::Arcade::run()
 {
     gg::Engine engine;
-    engine.set_renderer(_renderer->get<ass::IRenderer>());
+    engine.set_renderer(_args.getRenderer());
 
-    std::unique_ptr<ass::IGame> game{_game->get<ass::IGame>()};
-    game->run(engine);
+    auto game_instance = _game->get<ass::IGame>();
+
+    for (bool running = true; running;) {
+        switch (game_instance->run(engine)) {
+            case ass::RunStatus::Exit:
+                running = false;
+                break;
+            case ass::RunStatus::Restart:
+                game_instance = _game->get<ass::IGame>();
+                engine.clear_sprites();
+                break;
+            case ass::RunStatus::ShowMenu:
+                gg::Menu::show(engine, _game);
+                game_instance = _game->get<ass::IGame>();
+                break;
+            case ass::RunStatus::NextGame:
+                throw std::runtime_error("Not implemented");
+        }
+    }
     return 0;
 }

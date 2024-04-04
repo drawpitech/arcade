@@ -50,7 +50,7 @@ static const std::map<int, ass::EventKey> KEYS = {
     { ' ', ass::EventKey::KeySpace },
     { -1, ass::EventKey::MouseRight },
     { -1, ass::EventKey::MouseMiddle },
-    { -1, ass::EventKey::MouseLeft }
+    { -1, ass::EventKey::MouseLeft },
 };
 
 class NCurses : public ass::IRenderer
@@ -69,6 +69,7 @@ class NCurses : public ass::IRenderer
     void set_title(std::wstring title) final;
     void draw_sprite(ass::ISprite &sprite, void *&raw_data) final;
     void free_sprite(void *&raw_data) final;
+    void draw_text(ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color) final;
 
     ass::Vector2<size_t> get_window_size() const final;
     std::vector<ass::Event> events() final;

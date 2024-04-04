@@ -7,16 +7,18 @@
 
 #include "SDL2.hpp"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
-#include <iostream>
 
-extern "C" ass::IRenderer *uwu_goofy_ahhh_renderer_entrypoint()
+extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 {
-    return new SDL2();
+    return std::make_unique<SDL2>();
 }
 
 SDL2::SDL2() : _window(nullptr), _renderer(nullptr)
@@ -53,6 +55,7 @@ SDL2::SDL2() : _window(nullptr), _renderer(nullptr)
     }
 
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+    TTF_Init();
 
     refresh();
 }
@@ -68,9 +71,10 @@ void SDL2::refresh()
     SDL_RenderPresent(_renderer);
 }
 
-void SDL2::clear(ass::TermColor /*color*/)
+void SDL2::clear(ass::TermColor color)
 {
-    SDL_SetRenderDrawColor(_renderer, 96, 128, 255, 255);
+    const auto &c = COLORS.at(color);
+    SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
     SDL_RenderClear(_renderer);
 }
 
@@ -108,6 +112,7 @@ std::vector<ass::Event> SDL2::events()
     std::vector<ass::Event> events{};
 
     for (SDL_Event event; SDL_PollEvent(&event) == 1;) {
+        SDL_Keycode k = 0;
         switch (event.type) {
             case SDL_QUIT:
                 events.push_back(
@@ -115,16 +120,15 @@ std::vector<ass::Event> SDL2::events()
                 break;
 
             case SDL_KEYDOWN:
-                if (KEYS.contains(event.key.keysym.scancode))
-                    events.push_back(
-                        {KEYS.at(event.key.keysym.scancode),
-                         ass::EventState::KeyPressed});
+                k = SDL_GetKeyFromScancode(event.key.keysym.scancode);
+                if (KEYS.contains(k))
+                    events.push_back({KEYS.at(k), ass::EventState::KeyPressed});
                 break;
             case SDL_KEYUP:
-                if (KEYS.contains(event.key.keysym.scancode))
+                k = SDL_GetKeyFromScancode(event.key.keysym.scancode);
+                if (KEYS.contains(k))
                     events.push_back(
-                        {KEYS.at(event.key.keysym.scancode),
-                         ass::EventState::KeyReleased});
+                        {KEYS.at(k), ass::EventState::KeyReleased});
                 break;
             default:
                 break;
@@ -136,4 +140,22 @@ std::vector<ass::Event> SDL2::events()
 void SDL2::free_sprite(void *&raw_data)
 {
     SDL_DestroyTexture(reinterpret_cast<SDL_Texture *&>(raw_data));
+}
+
+void SDL2::draw_text(
+    ass::Vector2<float> pos, std::string tex, uint size, ass::TermColor color)
+{
+    if (TTF_WasInit() == 0)
+        throw std::runtime_error("TTF wasn't loaded in SDL2");
+
+    TTF_Font *font = TTF_OpenFont("assets/Comic Sans MS 400.ttf", size);
+    SDL_Surface *text_surface =
+        TTF_RenderText_Solid(font, tex.c_str(), COLORS.at(color));
+    SDL_Texture *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
+    int text_width = text_surface->w;
+    int text_height = text_surface->h;
+    SDL_FreeSurface(text_surface);
+    SDL_Rect render_quad = {int(pos.x) * 32, int(pos.y) * 32, text_width, text_height};
+    SDL_RenderCopy(_renderer, text, nullptr, &render_quad);
+    SDL_DestroyTexture(text);
 }

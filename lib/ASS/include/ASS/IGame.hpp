@@ -17,10 +17,18 @@
 #pragma once
 
 #include <exception>
+#include <memory>
 
 #include "IEngine.hpp"
 
 namespace ass {
+
+enum class RunStatus {
+    Exit,
+    Restart,
+    NextGame,
+    ShowMenu,
+};
 
 /**
  * @interface IGame
@@ -43,7 +51,7 @@ public:
     /**
      * @brief Run the game
      */
-    virtual void run(IEngine &) = 0;
+    virtual RunStatus run(IEngine &engine) = 0;
 
     IGame(const IGame &) = default;
     IGame(IGame &&) = delete;
@@ -57,7 +65,7 @@ public:
  * @brief Arcade Game shared library entrypoint
  * @relates ass::IGame
  * @ingroup game
- * @attention Must be defined a return a pointer to a final class derived from IGame
- * @return pointer to a newly allocated IGame derived class
+ * @attention Must be defined a return an unique pointer to a final class derived from IGame
+ * @return unique pointer to a newly allocated IGame derived class
  */
-extern "C" ass::IGame *uwu_goofy_ahhh_game_entrypoint(void);
+extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint(void);
