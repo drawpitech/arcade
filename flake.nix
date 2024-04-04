@@ -21,6 +21,8 @@
             SDL2_image
             libtiff
             libwebp
+            SDL2_ttf
+            pcre2.dev
             xdot
           ];
           enableParallelBuilding = true;

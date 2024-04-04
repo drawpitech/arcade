@@ -11,6 +11,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_keyboard.h>
 #include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
@@ -54,6 +55,7 @@ SDL2::SDL2() : _window(nullptr), _renderer(nullptr)
     }
 
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+    TTF_Init();
 
     refresh();
 }
@@ -124,7 +126,8 @@ std::vector<ass::Event> SDL2::events()
             case SDL_KEYUP:
                 k = SDL_GetKeyFromScancode(event.key.keysym.scancode);
                 if (KEYS.contains(k))
-                    events.push_back({KEYS.at(k), ass::EventState::KeyReleased});
+                    events.push_back(
+                        {KEYS.at(k), ass::EventState::KeyReleased});
                 break;
             default:
                 break;
@@ -139,7 +142,20 @@ void SDL2::free_sprite(void *&raw_data)
 }
 
 void SDL2::draw_text(
-    ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
+    ass::Vector2<float> pos, std::string tex, uint size, ass::TermColor color)
 {
-    // TODO
+    if (TTF_WasInit() == 0)
+        throw std::runtime_error("TTF wasn't loaded in SDL2");
+
+    TTF_Font *font = TTF_OpenFont("assets/Comic Sans MS 400.ttf", size);
+    SDL_Color text_color = {255, 255, 255, 0};
+    SDL_Surface *text_surface =
+        TTF_RenderText_Solid(font, tex.c_str(), text_color);
+    SDL_Texture *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
+    int text_width = text_surface->w;
+    int text_height = text_surface->h;
+    SDL_FreeSurface(text_surface);
+    SDL_Rect render_quad = {int(pos.x) * 32, int(pos.y) * 32, text_width, text_height};
+    SDL_RenderCopy(_renderer, text, nullptr, &render_quad);
+    SDL_DestroyTexture(text);
 }

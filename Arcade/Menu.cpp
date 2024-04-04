@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <exception>
 #include <filesystem>
+#include <iostream>
 #include <map>
 #include <thread>
 
@@ -29,9 +30,11 @@ void gg::Menu::show(
     std::map<std::string, gg::SharedObject> renderers;
 
     for (const auto &entry : std::filesystem::directory_iterator("./lib")) {
+        auto path = entry.path().string();
         try {
-            Menu::open_shared_object(entry.path().string(), games, renderers);
+            Menu::open_shared_object(path, games, renderers);
         } catch (const std::exception &e) {
+            std::cerr << "Error while loading `" << path << "`: " << e.what();
             continue;
         }
     }
