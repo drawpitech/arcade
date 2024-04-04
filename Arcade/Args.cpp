@@ -32,11 +32,7 @@ gg::Args::Args(int argc, char **argv) : _args(0)
             continue;
         }
 
-        // Game path argument
-        if (game.empty()) {
-            game = std::move(arg);
-            continue;
-        }
+        // Renderer path
         if (renderer.empty()) {
             renderer = std::move(arg);
             continue;
@@ -87,11 +83,6 @@ void gg::Args::showHelp()
 bool gg::Args::operator&(const arg_t &other) const
 {
     return (_args & other) == other;
-}
-
-const std::string &gg::Args::getGame() const
-{
-    return game;
 }
 
 const std::string &gg::Args::getRenderer() const

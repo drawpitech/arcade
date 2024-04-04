@@ -8,10 +8,8 @@
 #pragma once
 
 #include <cstdint>
-#include <memory>
 
 #include "Args.hpp"
-#include "SharedObject.hpp"
 
 namespace gg {
 
@@ -30,11 +28,10 @@ class Arcade
     /**
      * Run the arcade
      */
-    int run();
+    int run() const;
 
    private:
     Args _args;
-    std::unique_ptr<gg::SharedObject> _game;
 };
 
 }  // namespace gg

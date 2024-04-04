@@ -23,23 +23,20 @@ gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
         exit(0);
     }
 
-    auto game = _args.getGame();
-    auto renderer = _args.getRenderer();
-
-    if (game.empty() || renderer.empty())
+    if (_args.getRenderer().empty())
         throw gg::Exception("Missing arguments");
-
-    _game = std::make_unique<gg::SharedObject>(_args.getGame());
 }
 
 gg::Arcade::~Arcade() = default;
 
-int gg::Arcade::run()
+int gg::Arcade::run() const
 {
     gg::Engine engine;
     engine.set_renderer(_args.getRenderer());
 
-    auto game_instance = _game->get<ass::IGame>();
+    std::unique_ptr<gg::SharedObject> game = nullptr;
+    gg::Menu::show(engine, game);
+    auto game_instance = game->get<ass::IGame>();
 
     for (bool running = true; running;) {
         switch (game_instance->run(engine)) {
@@ -47,12 +44,12 @@ int gg::Arcade::run()
                 running = false;
                 break;
             case ass::RunStatus::Restart:
-                game_instance = _game->get<ass::IGame>();
+                game_instance = game->get<ass::IGame>();
                 engine.clear_sprites();
                 break;
             case ass::RunStatus::ShowMenu:
-                gg::Menu::show(engine, _game);
-                game_instance = _game->get<ass::IGame>();
+                gg::Menu::show(engine, game);
+                game_instance = game->get<ass::IGame>();
                 break;
             case ass::RunStatus::NextGame:
                 throw std::runtime_error("Not implemented");

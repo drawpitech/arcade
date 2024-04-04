@@ -24,12 +24,10 @@ class Args
     static void showHelp();
     bool operator&(const arg_t &other) const;
 
-    [[nodiscard]] const std::string &getGame() const;
     [[nodiscard]] const std::string &getRenderer() const;
 
    private:
     arg_t _args;
-    std::string game;
     std::string renderer;
 
     void getLongArg(const std::string &name);
