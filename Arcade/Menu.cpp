@@ -34,7 +34,8 @@ void gg::Menu::show(
         try {
             Menu::open_shared_object(path, games, renderers);
         } catch (const std::exception &e) {
-            std::cerr << "Error while loading `" << path << "`: " << e.what();
+            std::cerr << "While loading `" << path << "`: " << e.what()
+                      << std::endl;
             continue;
         }
     }

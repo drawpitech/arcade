@@ -71,9 +71,10 @@ void SDL2::refresh()
     SDL_RenderPresent(_renderer);
 }
 
-void SDL2::clear(ass::TermColor /*color*/)
+void SDL2::clear(ass::TermColor color)
 {
-    SDL_SetRenderDrawColor(_renderer, 96, 128, 255, 255);
+    const auto &c = COLORS.at(color);
+    SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
     SDL_RenderClear(_renderer);
 }
 
@@ -148,9 +149,8 @@ void SDL2::draw_text(
         throw std::runtime_error("TTF wasn't loaded in SDL2");
 
     TTF_Font *font = TTF_OpenFont("assets/Comic Sans MS 400.ttf", size);
-    SDL_Color text_color = {255, 255, 255, 0};
     SDL_Surface *text_surface =
-        TTF_RenderText_Solid(font, tex.c_str(), text_color);
+        TTF_RenderText_Solid(font, tex.c_str(), COLORS.at(color));
     SDL_Texture *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
     int text_width = text_surface->w;
     int text_height = text_surface->h;

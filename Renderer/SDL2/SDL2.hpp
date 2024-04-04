@@ -57,6 +57,25 @@ static const std::map<SDL_Keycode, ass::EventKey> KEYS = {
     /* { 0, ass::EventKey::MouseLeft } */
 };
 
+static const std::map<ass::TermColor, SDL_Color> COLORS = {
+    {ass::TermColor::Black, { 0, 0, 0, 0 }},
+    {ass::TermColor::Maroon, { 128, 0, 0, 0 }},
+    {ass::TermColor::Green, { 0, 128, 0, 0 }},
+    {ass::TermColor::Olive, { 128, 128, 0, 0 }},
+    {ass::TermColor::Navy, { 0, 0, 128, 0 }},
+    {ass::TermColor::Purple, { 128, 0, 128, 0 }},
+    {ass::TermColor::Teal, { 0, 128, 128, 0 }},
+    {ass::TermColor::Silver, { 192, 192, 192, 0 }},
+    {ass::TermColor::Grey, { 128, 128, 128, 0 }},
+    {ass::TermColor::Red, { 255, 0, 0, 0 }},
+    {ass::TermColor::Lime, { 0, 255, 0, 0 }},
+    {ass::TermColor::Yellow, { 255, 255, 0, 0 }},
+    {ass::TermColor::Blue, { 0, 0, 255, 0 }},
+    {ass::TermColor::Fuchsia, { 255, 0, 255, 0 }},
+    {ass::TermColor::Aqua, { 0, 255, 255, 0 }},
+    {ass::TermColor::White, { 255, 255, 255, 0 }}
+};
+
 class SDL2 : public ass::IRenderer
 {
    public:
