@@ -101,3 +101,10 @@ class SDL2 : public ass::IRenderer
     SDL_Renderer *_renderer;
     SDL_Window *_window;
 };
+
+
+struct SpriteData
+{
+    SDL_Texture *texture;
+    SDL_Rect dest;
+};

@@ -29,30 +29,26 @@ SDL2::SDL2() : _window(nullptr), _renderer(nullptr)
     int HEIGHT = 720;
     int WIDTH = 1200;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("Couldn't initialize SDL: %s\n", SDL_GetError());
-        exit(1);
-    }
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        throw std::runtime_error(
+            "Couldn't initialize SDL: " + std::string(SDL_GetError()) + "\n");
 
     _window = SDL_CreateWindow(
         "Arcade", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH,
         HEIGHT, windowFlags);
 
-    if (_window == nullptr) {
-        printf(
-            "Failed to open %d x %d window: %s\n", WIDTH, HEIGHT,
-            SDL_GetError());
-        exit(1);
-    }
+    if (_window == nullptr)
+        throw std::runtime_error(
+            "Failed to open " + std::to_string(WIDTH) + " x " +
+            std::to_string(HEIGHT) + " window: " + SDL_GetError() + "\n");
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
     _renderer = SDL_CreateRenderer(_window, -1, rendererFlags);
 
-    if (_renderer == nullptr) {
-        printf("Failed to create renderer: %s\n", SDL_GetError());
-        exit(1);
-    }
+    if (_renderer == nullptr)
+        throw std::runtime_error(
+            "Failed to create renderer: " + std::string(SDL_GetError()) + "\n");
 
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     TTF_Init();
@@ -82,17 +78,21 @@ void SDL2::set_title(std::wstring title) {}
 
 void SDL2::draw_sprite(ass::ISprite &sprite, void *&raw_data)
 {
-    auto &texture = reinterpret_cast<SDL_Texture *&>(raw_data);
+    auto &data = reinterpret_cast<SpriteData *&>(raw_data);
 
-    if (raw_data == nullptr)
-        texture = IMG_LoadTexture(_renderer, sprite.get_asset().path.c_str());
+    if (raw_data == nullptr) {
+        data = new SpriteData{0};
+        data->texture =
+            IMG_LoadTexture(_renderer, sprite.get_asset().path.c_str());
+        if (data->texture == nullptr)
+            throw std::runtime_error("Texture loading failed");
+        SDL_QueryTexture(
+            data->texture, nullptr, nullptr, &data->dest.w, &data->dest.h);
+    }
 
-    SDL_Rect dest;
-    dest.x = int(sprite.position().x) * 32;
-    dest.y = int(sprite.position().y) * 32;
-
-    SDL_QueryTexture(texture, nullptr, nullptr, &dest.w, &dest.h);
-    SDL_RenderCopy(_renderer, texture, nullptr, &dest);
+    data->dest.x = int(sprite.position().x) * 32;
+    data->dest.y = int(sprite.position().y) * 32;
+    SDL_RenderCopy(_renderer, data->texture, nullptr, &data->dest);
 }
 
 ass::Vector2<size_t> SDL2::get_window_size() const
@@ -139,7 +139,13 @@ std::vector<ass::Event> SDL2::events()
 
 void SDL2::free_sprite(void *&raw_data)
 {
-    SDL_DestroyTexture(reinterpret_cast<SDL_Texture *&>(raw_data));
+    auto &data = reinterpret_cast<SpriteData *&>(raw_data);
+
+    if (data == nullptr)
+        return;
+    if (data->texture != nullptr)
+        SDL_DestroyTexture(data->texture);
+    delete data;
 }
 
 void SDL2::draw_text(
@@ -155,7 +161,8 @@ void SDL2::draw_text(
     int text_width = text_surface->w;
     int text_height = text_surface->h;
     SDL_FreeSurface(text_surface);
-    SDL_Rect render_quad = {int(pos.x) * 32, int(pos.y) * 32, text_width, text_height};
+    SDL_Rect render_quad = {
+        int(pos.x) * 32, int(pos.y) * 32, text_width, text_height};
     SDL_RenderCopy(_renderer, text, nullptr, &render_quad);
     SDL_DestroyTexture(text);
 }
