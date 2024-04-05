@@ -11,9 +11,7 @@
 #include <ASS/IGame.hpp>
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
-#include <chrono>
-#include <iostream>
-#include <thread>
+#include <ctime>
 
 extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint()
 {
@@ -29,8 +27,6 @@ Snake::~Snake() = default;
 
 ass::RunStatus Snake::run(ass::IEngine &engine)
 {
-    const auto interval = std::chrono::milliseconds(100);
-
     Player snake{engine};
     Fruit fruit{engine};
 
@@ -84,6 +80,6 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
         snake.draw(engine);
         fruit.draw(engine);
         engine.refresh();
-        std::this_thread::sleep_for(interval);
+        engine.wait_frame(10);
     }
 }
