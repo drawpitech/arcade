@@ -99,10 +99,11 @@ class RSFML : public ass::IRenderer
 
    private:
     sf::RenderWindow _window;
+    sf::Font _font;
 };
-/**/
-/* struct RawSpriteData */
-/* { */
-/*     sf::Sprite sprite; */
-/*     sf::Texture texture; */
-/* }; */
+
+struct RawSpriteData
+{
+    sf::Sprite sprite;
+    sf::Texture texture;
+};

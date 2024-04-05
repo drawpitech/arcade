@@ -17,6 +17,9 @@
             pkg-config
             ncurses
             sfml
+            openal
+            libvorbis
+            flac
             SDL2
             SDL2_image
             libtiff

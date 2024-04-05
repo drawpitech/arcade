@@ -10,7 +10,6 @@
 #include <ASS/IRenderer.hpp>
 #include <ASS/ISprite.hpp>
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 {
@@ -21,6 +20,9 @@ RSFML::RSFML() : _window(sf::VideoMode(1200, 720), "Arcade", sf::Style::None)
 {
     if (!_window.isOpen())
         throw std::runtime_error("The window failed to open");
+
+    if (!_font.loadFromFile("assets/Comic Sans MS 400.ttf"))
+        throw std::runtime_error("Font failed to load");
 }
 
 RSFML::~RSFML()
@@ -45,14 +47,18 @@ void RSFML::set_title(std::wstring title)
 
 void RSFML::draw_sprite(ass::ISprite &sprite, void *&raw_data)
 {
-    const auto &pos = sprite.position();
-    sf::Texture t;
-    if (!t.loadFromFile(sprite.get_asset().path))
-        throw std::runtime_error("Texture failed");
+    auto &data = reinterpret_cast<RawSpriteData *&>(raw_data);
 
-    sf::Sprite s(t);
-    s.setPosition(pos.x, pos.y);
-    _window.draw(s);
+    if (data == nullptr) {
+        data = new RawSpriteData;
+        if (!data->texture.loadFromFile(sprite.get_asset().path))
+            throw std::runtime_error("Texture failed");
+        data->sprite.setTexture(data->texture);
+    }
+
+    const auto &pos = sprite.position();
+    data->sprite.setPosition(pos.x, pos.y);
+    _window.draw(data->sprite);
 }
 
 ass::Vector2<size_t> RSFML::get_window_size() const
@@ -84,12 +90,8 @@ std::vector<ass::Event> RSFML::events()
 void RSFML::draw_text(
     ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
 {
-    sf::Font font;
-    if (!font.loadFromFile("assets/Comic Sans MS 400.ttf"))
-        throw std::runtime_error("Font failed to load");
-
     sf::Text display_text;
-    display_text.setFont(font);
+    display_text.setFont(_font);
     display_text.setString(text);
     display_text.setCharacterSize(size);
     display_text.setFillColor(COLORS.at(color));
@@ -99,5 +101,5 @@ void RSFML::draw_text(
 
 void RSFML::free_sprite(void *&raw_data)
 {
-    /* delete reinterpret_cast<RawSpriteData *&>(raw_data); */
+    delete reinterpret_cast<RawSpriteData *&>(raw_data);
 }
