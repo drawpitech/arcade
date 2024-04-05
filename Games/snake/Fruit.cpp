@@ -20,6 +20,7 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
                 .height = 1,
                 .width = 1,
                 .chars = {{'x'}},
+                .char_colors = {{ass::xterm_color_t(ass::TermColor::Red)}},
             },
         .path = "./Games/snake/assets/fruit.png",
     });
