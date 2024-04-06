@@ -57,7 +57,7 @@ void RSFML::draw_sprite(ass::ISprite &sprite, void *&raw_data)
     }
 
     const auto &pos = sprite.position();
-    data->sprite.setPosition(pos.x, pos.y);
+    data->sprite.setPosition(pos.x * 32, pos.y * 32);
     _window.draw(data->sprite);
 }
 
