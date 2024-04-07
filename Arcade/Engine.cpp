@@ -136,8 +136,6 @@ gg::Engine::get_shared_objects()
         try {
             gg::Engine::open_shared_object(path, items);
         } catch (const std::exception &e) {
-            std::cerr << "While loading `" << path << "`: " << e.what()
-                      << std::endl;
             continue;
         }
     }

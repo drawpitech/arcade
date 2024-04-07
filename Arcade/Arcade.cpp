@@ -11,6 +11,7 @@
 
 #include <ASS/IGame.hpp>
 #include <algorithm>
+#include <iostream>
 #include <memory>
 
 #include "Engine.hpp"
@@ -34,6 +35,7 @@ int gg::Arcade::run() const
 {
     gg::Engine engine;
     engine.set_renderer(_args.getRenderer());
+    size_t best_score = 0;
 
     auto username = gg::Menu::get_username(engine);
 
@@ -43,7 +45,10 @@ int gg::Arcade::run() const
 
     for (bool running = true; running;) {
         auto status = game_instance->run(engine);
-        // TODO: score
+        if (status.second > best_score)
+            std::clog << "New best score for '" << username
+                      << "': " << best_score << std::endl;
+
         switch (status.first) {
             case ass::RunStatus::Exit:
                 running = false;
