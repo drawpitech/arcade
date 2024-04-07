@@ -29,6 +29,7 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
 {
     Player snake{engine};
     Fruit fruit{engine};
+    Map map{engine};
 
     while (true) {
         // Avoid that the fruit can disapear
@@ -81,6 +82,7 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
         engine.clear(ass::TermColor::Black);
         snake.draw(engine);
         fruit.draw(engine);
+        map.draw(engine);
         engine.refresh();
         engine.wait_frame(10 + snake.get_size() / 4);
     }

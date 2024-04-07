@@ -69,3 +69,45 @@ class Player
     Direction _current_direction;
     std::vector<pos_t> _body;
 };
+
+static const std::vector<std::string> MAP{
+    "OOOOOOOOOOOOOOOOOOO",
+    "O                 O",
+    "O OOO O OOO O OOO O",
+    "O O O O     O O O O",
+    "O OOO O O O O OOO O",
+    "O     O O O O     O",
+    "O OOOOO O O OOOOO O",
+    "O O             O O",
+    "O O OOOOO OOOOO O O",
+    "O                 O",
+    "O OOOOO OOO OOOOO O",
+    "O       O O       O",
+    "O OOO O OOO O OOO O",
+    "O O O O     O O O O",
+    "O OOO O OOO O OOO O",
+    "O     O O O O     O",
+    "O OOOOO OOO OOOOO O",
+    "O                 O",
+    "OOOOOOOOOOOOOOOOOOO",
+};
+
+class Map
+{
+   public:
+    Map(ass::IEngine &engine);
+    ~Map();
+
+    enum class MapPart : char
+    {
+        Void,
+        Wall,
+    };
+
+    MapPart get_tile(pos_t pos) const;
+    void draw(ass::IEngine &engine);
+
+   private:
+    std::vector<std::vector<MapPart>> _map;
+    std::unique_ptr<ass::ISprite> _sprite;
+};
