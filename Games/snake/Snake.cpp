@@ -57,23 +57,19 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
                 case ass::EventKey::KeyRight:
                     snake.set_direction(Direction::Right);
                     break;
+                case ass::EventKey::KeySpace:
+                    for (size_t i = 0; i < 3; i++)
+                        snake.move(engine, fruit);
+                    break;
                 default:
                     break;
             }
         }
-        snake.move();
+        snake.move(engine, fruit);
 
         // Check if the player is dead
         if (snake.is_dead(engine))
             return ass::RunStatus::Exit;
-
-        // The snake touches the fruit
-        auto fruit_pos = fruit.position();
-        auto head = snake.get_head();
-        if (head.x == fruit_pos.x && head.y == fruit_pos.y) {
-            fruit.move(engine);
-            snake.grow();
-        }
 
         // Redraw screen
         engine.clear(ass::TermColor::Black);

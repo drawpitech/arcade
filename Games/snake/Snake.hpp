@@ -31,27 +31,6 @@ enum class Direction {
 
 using pos_t = ass::Vector2<float>;
 
-class Player
-{
-   public:
-    Player(ass::IEngine &engine);
-    ~Player() = default;
-
-    void draw(ass::IEngine &engine);
-    void move();
-    bool is_dead(ass::IEngine &engine);
-    void grow();
-    void set_direction(Direction direction);
-
-    pos_t &get_head();
-
-   private:
-    std::unique_ptr<ass::ISprite> _sprite;
-    std::queue<Direction> _directions;
-    Direction _current_direction;
-    std::vector<pos_t> _body;
-};
-
 class Fruit
 {
    public:
@@ -64,4 +43,25 @@ class Fruit
 
    private:
     std::unique_ptr<ass::ISprite> _sprite;
+};
+
+class Player
+{
+   public:
+    Player(ass::IEngine &engine);
+    ~Player() = default;
+
+    void draw(ass::IEngine &engine);
+    void move(ass::IEngine &engine, Fruit &fruit);
+    bool is_dead(ass::IEngine &engine);
+    void grow();
+    void set_direction(Direction direction);
+
+    pos_t &get_head();
+
+   private:
+    std::unique_ptr<ass::ISprite> _sprite;
+    std::queue<Direction> _directions;
+    Direction _current_direction;
+    std::vector<pos_t> _body;
 };
