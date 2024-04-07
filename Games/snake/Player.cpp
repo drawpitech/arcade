@@ -119,3 +119,8 @@ void Player::draw(ass::IEngine &engine)
         engine.draw_sprite(*_sprite);
     }
 }
+
+size_t Player::get_size() const
+{
+    return _body.size();
+}

@@ -82,6 +82,6 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
         snake.draw(engine);
         fruit.draw(engine);
         engine.refresh();
-        engine.wait_frame(10);
+        engine.wait_frame(10 + snake.get_size() / 4);
     }
 }

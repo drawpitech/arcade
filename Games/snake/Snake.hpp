@@ -60,6 +60,7 @@ class Player
 
     pos_t &get_head();
     pos_t &get_tail();
+    size_t get_size() const;
 
    private:
     std::unique_ptr<ass::ISprite> _sprite;
