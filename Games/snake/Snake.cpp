@@ -31,6 +31,12 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
     Fruit fruit{engine};
 
     while (true) {
+        // Avoid that the fruit can disapear
+        const auto &fruit_pos = fruit.position();
+        const auto &[w, h] = engine.get_renderer().get_window_size();
+        if (fruit_pos.x >= w || fruit_pos.y >= h)
+            fruit.move(engine);
+
         // Move the snake
         for (auto &event : engine.events()) {
             if (event.state != ass::EventState::KeyPressed)
