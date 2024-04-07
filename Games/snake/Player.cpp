@@ -78,7 +78,7 @@ void Player::move(ass::IEngine &engine, Fruit &fruit)
     // The snake touches the fruit
     auto fruit_pos = fruit.position();
     if (head.x == fruit_pos.x && head.y == fruit_pos.y) {
-        fruit.move(engine);
+        fruit.move(get_tail());
         grow();
     }
 }
@@ -105,6 +105,11 @@ void Player::set_direction(Direction direction)
 pos_t &Player::get_head()
 {
     return _body.at(0);
+}
+
+pos_t &Player::get_tail()
+{
+    return _body.at(_body.size() - 1);
 }
 
 void Player::draw(ass::IEngine &engine)

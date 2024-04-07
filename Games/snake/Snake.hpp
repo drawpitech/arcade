@@ -39,6 +39,7 @@ class Fruit
 
     void draw(ass::IEngine &engine);
     void move(ass::IEngine &engine);
+    void move(pos_t pos);
     pos_t position();
 
    private:
@@ -58,6 +59,7 @@ class Player
     void set_direction(Direction direction);
 
     pos_t &get_head();
+    pos_t &get_tail();
 
    private:
     std::unique_ptr<ass::ISprite> _sprite;

@@ -27,10 +27,15 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
     move(engine);
 }
 
+void Fruit::move(pos_t pos)
+{
+    _sprite->move(pos);
+}
+
 void Fruit::move(ass::IEngine &engine)
 {
     auto [width, height] = engine.get_renderer().get_window_size();
-    _sprite->move({
+    move({
         static_cast<float>(rand() % width),
         static_cast<float>(rand() % height),
     });
