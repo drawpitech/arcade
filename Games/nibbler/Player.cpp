@@ -65,12 +65,34 @@ bool Player::is_safe(Direction dir, Map &map)
 
 void Player::move(Fruit &fruit, Map &map)
 {
-
     // Check that the snake doesn't do a 360 no scope
-    if (is_safe(_current_direction, map) && int(_last_direction) / 2 != int(_current_direction) / 2)
+    if (is_safe(_current_direction, map) &&
+        int(_last_direction) / 2 != int(_current_direction) / 2)
         _last_direction = _current_direction;
     else
         _current_direction = _last_direction;
+
+    if (!is_safe(_current_direction, map)) {
+        if (_current_direction != Direction::Up &&
+            _current_direction != Direction::Down &&
+            is_safe(Direction::Up, map))
+            _current_direction = Direction::Up;
+        else if (
+            _current_direction != Direction::Down &&
+            _current_direction != Direction::Up &&
+            is_safe(Direction::Down, map))
+            _current_direction = Direction::Down;
+        else if (
+            _current_direction != Direction::Right &&
+            _current_direction != Direction::Left &&
+            is_safe(Direction::Right, map))
+            _current_direction = Direction::Right;
+        else if (
+            _current_direction != Direction::Left &&
+            _current_direction != Direction::Right &&
+            is_safe(Direction::Left, map))
+            _current_direction = Direction::Left;
+    }
 
     // Move the head
     auto &head = get_head();

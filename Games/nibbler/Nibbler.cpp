@@ -78,6 +78,6 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
         snake.draw(engine);
         map.draw(engine);
         engine.refresh();
-        engine.wait_frame(10 + snake.get_size() / 4);
+        engine.wait_frame(7 + snake.get_size() / 4);
     }
 }
