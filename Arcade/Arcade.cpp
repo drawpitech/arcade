@@ -10,13 +10,14 @@
 #include <dlfcn.h>
 
 #include <ASS/IGame.hpp>
+#include <algorithm>
 #include <memory>
 
 #include "Engine.hpp"
 #include "Menu.hpp"
 #include "SharedObject.hpp"
 
-gg::Arcade::Arcade(int argc, char **argv) : _args(argc, argv)
+gg::Arcade::Arcade(int argc, char** argv) : _args(argc, argv)
 {
     if (_args & gg::Arg::HELP) {
         Args::showHelp();
@@ -56,7 +57,20 @@ int gg::Arcade::run() const
                 game_instance = game->get<ass::IGame>();
                 break;
             case ass::RunStatus::NextGame:
-                throw std::runtime_error("Not implemented");
+                auto v = gg::Engine::get_shared_objects().first;
+                std::sort(v.begin(), v.end());
+                auto it = std::find(v.begin(), v.end(), game->get_path());
+                size_t index = 0;
+                if (it != v.end()) {
+                    index = it - v.begin() + 1;
+                    if (index >= v.size())
+                        index = 0;
+                }
+
+                auto new_game = std::make_unique<gg::SharedObject>(v.at(index));
+                game_instance = new_game->get<ass::IGame>();
+                game = std::move(new_game);
+                break;
         }
     }
     return 0;

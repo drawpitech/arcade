@@ -33,7 +33,9 @@ std::string gg::Menu::get_username(gg::Engine &engine)
                 continue;
             switch (event.key) {
                 case Key::KeyEnter:
-                    return username;
+                    if (!username.empty())
+                        return username;
+                    break;
                 default:
                     if (KeysToChar.contains(event.key))
                         username += KeysToChar.at(event.key);
