@@ -85,7 +85,7 @@ class Player
    private:
     std::unique_ptr<ass::ISprite> _sprite;
     Direction _current_direction;
-    Direction _last_direction;
+    Direction _next_direction;
     std::vector<pos_t> _body;
 
     bool is_safe(Direction dir, Map &map);
