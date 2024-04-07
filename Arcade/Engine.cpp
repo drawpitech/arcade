@@ -55,7 +55,8 @@ std::vector<ass::Event> gg::Engine::events()
 void gg::Engine::draw_text(
     ass::Vector2<float> pos, std::string text, uint size, ass::TermColor color)
 {
-    _renderer->draw_text(pos, text, size, color);
+    if (!text.empty())
+        _renderer->draw_text(pos, text, size, color);
 }
 
 void gg::Engine::wait_frame(u_int8_t fps)

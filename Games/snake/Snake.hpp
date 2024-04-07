@@ -19,7 +19,7 @@ class Snake : public ass::IGame
     Snake();
     ~Snake() override;
 
-    ass::RunStatus run(ass::IEngine &engine) final;
+    std::pair<ass::RunStatus, size_t> run(ass::IEngine &engine) final;
 };
 
 enum class Direction {

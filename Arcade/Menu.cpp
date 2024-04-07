@@ -14,10 +14,44 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 #include <algorithm>
+#include <iostream>
 #include <thread>
 
 #include "Engine.hpp"
 #include "SharedObject.hpp"
+
+using Color = ass::TermColor;
+using Key = ass::EventKey;
+
+std::string gg::Menu::get_username(gg::Engine &engine)
+{
+    std::string username;
+
+    while (true) {
+        for (auto &event : engine.events()) {
+            if (event.state != ass::EventState::KeyPressed)
+                continue;
+            switch (event.key) {
+                case Key::KeyEnter:
+                    if (!username.empty())
+                        return username;
+                    break;
+                default:
+                    if (KeysToChar.contains(event.key))
+                        username += KeysToChar.at(event.key);
+                    break;
+            }
+        }
+
+        engine.clear(Color::White);
+        engine.draw_text({5, 2}, "Arcade", 30, Color::Red);
+        engine.draw_text({5, 5}, "Enter your username: ", 20, Color::Black);
+        engine.draw_text({5, 6}, username, 24, Color::Blue);
+        engine.draw_text({5, 8}, "Press ENTER to confirm", 20, Color::Black);
+        engine.refresh();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+}
 
 void gg::Menu::show(gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game)
 {
@@ -27,9 +61,6 @@ void gg::Menu::show(gg::Engine &engine, std::unique_ptr<gg::SharedObject> &game)
         Menu::get_selection(engine, items.first));
     engine.set_renderer(Menu::get_selection(engine, items.second));
 }
-
-using Color = ass::TermColor;
-using Key = ass::EventKey;
 
 std::string gg::Menu::get_selection(
     gg::Engine &engine, std::vector<std::string> &items)

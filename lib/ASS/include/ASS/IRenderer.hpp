@@ -31,7 +31,7 @@ namespace ass {
 /**
  * @interface IRenderer
  * @brief Renderer Interface
- * @details Set of method to implement for the Renderer part of the Arcade project
+ * @details Set of method to implement for the Renderer part of the Arcade project. Most of these mthods should only be called from the Engine
  * @ingroup renderer
  * @exception IRenderer::Exception Renderer’s exceptions
  */

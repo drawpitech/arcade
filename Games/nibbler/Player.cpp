@@ -18,7 +18,7 @@
 Player::Player(ass::IEngine &engine)
     : _sprite(engine.create_sprite()),
       _current_direction(Direction::Right),
-      _last_direction(_current_direction)
+      _next_direction(_current_direction)
 {
     _sprite->set_asset({
         .sprite =
@@ -65,14 +65,10 @@ bool Player::is_safe(Direction dir, Map &map)
 
 void Player::move(Fruit &fruit, Map &map)
 {
-    // Check that the snake doesn't do a 360 no scope
-    if (is_safe(_current_direction, map) &&
-        int(_last_direction) / 2 != int(_current_direction) / 2)
-        _last_direction = _current_direction;
-    else
-        _current_direction = _last_direction;
+    if (is_safe(_next_direction, map))
+        _current_direction = _next_direction;
 
-    if (!is_safe(_current_direction, map)) {
+    else if (!is_safe(_current_direction, map)) {
         if (_current_direction != Direction::Up &&
             _current_direction != Direction::Down &&
             is_safe(Direction::Up, map))
@@ -92,6 +88,7 @@ void Player::move(Fruit &fruit, Map &map)
             _current_direction != Direction::Right &&
             is_safe(Direction::Left, map))
             _current_direction = Direction::Left;
+        _next_direction = _current_direction;
     }
 
     // Move the head
@@ -140,7 +137,7 @@ bool Player::is_dead(ass::IEngine &engine)
 void Player::set_direction(Direction direction, Map &map)
 {
     if (int(direction) / 2 != int(_current_direction) / 2)
-        _current_direction = direction;
+        _next_direction = direction;
 }
 
 pos_t &Player::get_head()
