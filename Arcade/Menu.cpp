@@ -42,6 +42,7 @@ std::string gg::Menu::get_username(gg::Engine &engine)
         }
 
         engine.clear(Color::White);
+        engine.draw_text({5, 2}, "Arcade", 30, Color::Red);
         engine.draw_text({5, 5}, "Enter your username: ", 20, Color::Black);
         engine.draw_text({5, 6}, username, 24, Color::Blue);
         engine.draw_text({5, 8}, "Press ENTER to confirm", 20, Color::Black);
