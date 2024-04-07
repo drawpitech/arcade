@@ -24,21 +24,12 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
             },
         .path = "assets/nibbler/fruit.png",
     });
-    move(engine);
+    _sprite->move({9, 8});
 }
 
 void Fruit::move(pos_t pos)
 {
     _sprite->move(pos);
-}
-
-void Fruit::move(ass::IEngine &engine)
-{
-    auto [width, height] = engine.get_renderer().get_window_size();
-    move({
-        static_cast<float>(rand() % width),
-        static_cast<float>(rand() % height),
-    });
 }
 
 pos_t Fruit::position()

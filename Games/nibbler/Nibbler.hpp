@@ -39,11 +39,30 @@ class Fruit
     ~Fruit() = default;
 
     void draw(ass::IEngine &engine);
-    void move(ass::IEngine &engine);
     void move(pos_t pos);
     pos_t position();
 
    private:
+    std::unique_ptr<ass::ISprite> _sprite;
+};
+
+class Map
+{
+   public:
+    Map(ass::IEngine &engine);
+    ~Map();
+
+    enum class MapPart : char
+    {
+        Void,
+        Wall,
+    };
+
+    MapPart get_tile(pos_t pos) const;
+    void draw(ass::IEngine &engine);
+
+   private:
+    std::vector<std::vector<MapPart>> _map;
     std::unique_ptr<ass::ISprite> _sprite;
 };
 
@@ -54,10 +73,10 @@ class Player
     ~Player() = default;
 
     void draw(ass::IEngine &engine);
-    void move(ass::IEngine &engine, Fruit &fruit);
+    void move(Fruit &fruit, Map &map);
     bool is_dead(ass::IEngine &engine);
     void grow();
-    void set_direction(Direction direction);
+    void set_direction(Direction direction, Map &map);
 
     pos_t &get_head();
     pos_t &get_tail();
@@ -65,9 +84,11 @@ class Player
 
    private:
     std::unique_ptr<ass::ISprite> _sprite;
-    std::queue<Direction> _directions;
     Direction _current_direction;
+    Direction _last_direction;
     std::vector<pos_t> _body;
+
+    bool is_safe(Direction dir, Map &map);
 };
 
 static const std::vector<std::string> MAP{
@@ -90,24 +111,4 @@ static const std::vector<std::string> MAP{
     "O OOOOO OOO OOOOO O",
     "O                 O",
     "OOOOOOOOOOOOOOOOOOO",
-};
-
-class Map
-{
-   public:
-    Map(ass::IEngine &engine);
-    ~Map();
-
-    enum class MapPart : char
-    {
-        Void,
-        Wall,
-    };
-
-    MapPart get_tile(pos_t pos) const;
-    void draw(ass::IEngine &engine);
-
-   private:
-    std::vector<std::vector<MapPart>> _map;
-    std::unique_ptr<ass::ISprite> _sprite;
 };

@@ -79,8 +79,8 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
 
         // Redraw screen
         engine.clear(ass::TermColor::Black);
-        snake.draw(engine);
         fruit.draw(engine);
+        snake.draw(engine);
         engine.refresh();
         engine.wait_frame(10 + snake.get_size() / 4);
     }

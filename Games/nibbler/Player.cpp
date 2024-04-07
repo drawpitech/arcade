@@ -10,12 +10,15 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "Nibbler.hpp"
 
 Player::Player(ass::IEngine &engine)
-    : _sprite(engine.create_sprite()), _current_direction(Direction::Right)
+    : _sprite(engine.create_sprite()),
+      _current_direction(Direction::Right),
+      _last_direction(_current_direction)
 {
     _sprite->set_asset({
         .sprite =
@@ -30,10 +33,7 @@ Player::Player(ass::IEngine &engine)
 
     const auto [w, h] = engine.get_renderer().get_window_size();
     for (size_t i = 0; i < 4; i++)
-        _body.push_back({
-            std::round(static_cast<float>(w) / 2) - i,
-            std::round(static_cast<float>(h) / 2),
-        });
+        _body.push_back({static_cast<float>(4 - i), 1});
 }
 
 void Player::grow()
@@ -43,36 +43,57 @@ void Player::grow()
     _body.push_back(_body.back());
 }
 
-void Player::move(ass::IEngine &engine, Fruit &fruit)
+bool Player::is_safe(Direction dir, Map &map)
 {
-    // Move the tail
-    for (size_t i = _body.size() - 1; i > 0; i--)
-        _body.at(i) = _body.at(i - 1);
-
-    if (!_directions.empty()) {
-        auto direction = _directions.front();
-        _directions.pop();
-
-        // Check that the snake doesn't do a 360 no scope
-        if (int(direction) / 2 != int(_current_direction) / 2)
-            _current_direction = direction;
+    pos_t pos{get_head()};
+    switch (dir) {
+        case Direction::Up:
+            pos.y -= 1;
+            break;
+        case Direction::Down:
+            pos.y += 1;
+            break;
+        case Direction::Right:
+            pos.x += 1;
+            break;
+        case Direction::Left:
+            pos.x -= 1;
+            break;
     }
+    return map.get_tile(pos) == Map::MapPart::Void;
+}
+
+void Player::move(Fruit &fruit, Map &map)
+{
+
+    // Check that the snake doesn't do a 360 no scope
+    if (is_safe(_current_direction, map) && int(_last_direction) / 2 != int(_current_direction) / 2)
+        _last_direction = _current_direction;
+    else
+        _current_direction = _last_direction;
 
     // Move the head
     auto &head = get_head();
-    switch (_current_direction) {
-        case Direction::Up:
-            head.y -= 1;
-            break;
-        case Direction::Down:
-            head.y += 1;
-            break;
-        case Direction::Right:
-            head.x += 1;
-            break;
-        case Direction::Left:
-            head.x -= 1;
-            break;
+    if (is_safe(_current_direction, map)) {
+        // Move the tail
+        for (size_t i = _body.size() - 1; i > 0; i--)
+            _body.at(i) = _body.at(i - 1);
+
+        // Move the head
+        switch (_current_direction) {
+            case Direction::Up:
+                head.y -= 1;
+                break;
+            case Direction::Down:
+                head.y += 1;
+                break;
+            case Direction::Right:
+                head.x += 1;
+                break;
+            case Direction::Left:
+                head.x -= 1;
+                break;
+        }
     }
 
     // The snake touches the fruit
@@ -91,15 +112,13 @@ bool Player::is_dead(ass::IEngine &engine)
     for (size_t i = 2; i < _body.size(); i++)
         if (head.x == _body.at(i).x && head.y == _body.at(i).y)
             return true;
-
-    // Out of bounds
-    auto [width, height] = engine.get_renderer().get_window_size();
-    return head.x < 0 || head.x >= width || head.y < 0 || head.y >= height;
+    return false;
 }
 
-void Player::set_direction(Direction direction)
+void Player::set_direction(Direction direction, Map &map)
 {
-    _directions.push(direction);
+    if (int(direction) / 2 != int(_current_direction) / 2)
+        _current_direction = direction;
 }
 
 pos_t &Player::get_head()

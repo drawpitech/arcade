@@ -32,12 +32,6 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
     Map map{engine};
 
     while (true) {
-        // Avoid that the fruit can disapear
-        const auto &fruit_pos = fruit.position();
-        const auto &[w, h] = engine.get_renderer().get_window_size();
-        if (fruit_pos.x >= w || fruit_pos.y >= h)
-            fruit.move(engine);
-
         // Move the snake
         for (auto &event : engine.events()) {
             if (event.state != ass::EventState::KeyPressed)
@@ -53,26 +47,26 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
                     engine.next_renderer();
                     break;
                 case ass::EventKey::KeyUp:
-                    snake.set_direction(Direction::Up);
+                    snake.set_direction(Direction::Up, map);
                     break;
                 case ass::EventKey::KeyDown:
-                    snake.set_direction(Direction::Down);
+                    snake.set_direction(Direction::Down, map);
                     break;
                 case ass::EventKey::KeyLeft:
-                    snake.set_direction(Direction::Left);
+                    snake.set_direction(Direction::Left, map);
                     break;
                 case ass::EventKey::KeyRight:
-                    snake.set_direction(Direction::Right);
+                    snake.set_direction(Direction::Right, map);
                     break;
                 case ass::EventKey::KeySpace:
                     for (size_t i = 0; i < 3; i++)
-                        snake.move(engine, fruit);
+                        snake.move(fruit, map);
                     break;
                 default:
                     break;
             }
         }
-        snake.move(engine, fruit);
+        snake.move(fruit, map);
 
         // Check if the player is dead
         if (snake.is_dead(engine))
@@ -80,8 +74,8 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
 
         // Redraw screen
         engine.clear(ass::TermColor::Black);
-        snake.draw(engine);
         fruit.draw(engine);
+        snake.draw(engine);
         map.draw(engine);
         engine.refresh();
         engine.wait_frame(10 + snake.get_size() / 4);
