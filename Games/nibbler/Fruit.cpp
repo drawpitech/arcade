@@ -22,7 +22,7 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
                 .chars = {{'x'}},
                 .char_colors = {{ass::xterm_color_t(ass::TermColor::Red)}},
             },
-        .path = "./Games/nibbler/assets/fruit.png",
+        .path = "assets/nibbler/fruit.png",
     });
     move(engine);
 }

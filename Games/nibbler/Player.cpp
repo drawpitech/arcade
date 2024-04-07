@@ -25,7 +25,7 @@ Player::Player(ass::IEngine &engine)
                 .chars = {{'o'}},
                 .char_colors = {{ass::xterm_color_t(ass::TermColor::White)}},
             },
-        .path = "./Games/nibbler/assets/snake.png",
+        .path = "assets/nibbler/snake.png",
     });
 
     const auto [w, h] = engine.get_renderer().get_window_size();
