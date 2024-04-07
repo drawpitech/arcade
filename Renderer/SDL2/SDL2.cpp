@@ -155,8 +155,14 @@ void SDL2::draw_text(
         throw std::runtime_error("TTF wasn't loaded in SDL2");
 
     TTF_Font *font = TTF_OpenFont("assets/Comic Sans MS 400.ttf", size);
+    if (font == nullptr)
+        throw std::runtime_error("Font failed to load");
     auto *text_surface = TTF_RenderText_Solid(font, str.c_str(), COLORS.at(color));
+    if (text_surface == nullptr)
+        throw std::runtime_error("Font failed to load");
     auto *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
+    if (text == nullptr)
+        throw std::runtime_error("Font failed to load");
 
     int text_width = text_surface->w;
     int text_height = text_surface->h;
