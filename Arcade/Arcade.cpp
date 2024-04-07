@@ -41,7 +41,9 @@ int gg::Arcade::run() const
     auto game_instance = game->get<ass::IGame>();
 
     for (bool running = true; running;) {
-        switch (game_instance->run(engine)) {
+        auto status = game_instance->run(engine);
+        // TODO: score
+        switch (status.first) {
             case ass::RunStatus::Exit:
                 running = false;
                 break;

@@ -23,4 +23,4 @@ struct Vector2 {
     T x; ///< x value
     T y; ///< y value
 };
-}
+} // namespace ass

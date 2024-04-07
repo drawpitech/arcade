@@ -6,7 +6,6 @@ project(ASS
         LANGUAGES CXX
 )
 
-
 add_library(ass INTERFACE)
 target_include_directories(ass INTERFACE include)
 target_compile_options(ass INTERFACE "$<$<CXX_COMPILER_ID:Clang,GNU>:-Wno-return-type-c-linkage>")

@@ -27,9 +27,10 @@ Snake::Snake()
 
 Snake::~Snake() = default;
 
-ass::RunStatus Snake::run(ass::IEngine &engine)
+std::pair<ass::RunStatus, size_t> Snake::run(ass::IEngine &engine)
 {
     const auto interval = std::chrono::milliseconds(100);
+    size_t score = 0;
 
     Player snake{engine};
     Fruit fruit{engine};
@@ -41,11 +42,11 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
                 continue;
             switch (event.key) {
                 case ass::EventKey::KeyQ:
-                    return ass::RunStatus::Exit;
+                    return {ass::RunStatus::Exit, score};
                 case ass::EventKey::KeyR:
-                    return ass::RunStatus::Restart;
+                    return {ass::RunStatus::Restart, score};
                 case ass::EventKey::KeyM:
-                    return ass::RunStatus::ShowMenu;
+                    return {ass::RunStatus::ShowMenu, score};
                 case ass::EventKey::KeyN:
                     engine.next_renderer();
                     break;
@@ -69,7 +70,7 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
 
         // Check if the player is dead
         if (snake.is_dead(engine))
-            return ass::RunStatus::Exit;
+            return {ass::RunStatus::Exit, score};
 
         // The snake touches the fruit
         auto fruit_pos = fruit.position();
