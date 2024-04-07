@@ -20,6 +20,7 @@ extern "C" std::unique_ptr<ass::IRenderer> uwu_goofy_ahhh_renderer_entrypoint()
 
 NCurses::NCurses()
 {
+    setlocale(LC_ALL, "");
     initscr();
     cbreak();
     noecho();
@@ -69,12 +70,12 @@ void NCurses::draw_sprite(ass::ISprite &sprite, void *& /*raw_data*/)
     auto pos = sprite.position();
     auto assets = sprite.get_asset().sprite;
 
-    size_t y = pos.y;
     for (size_t i = 0; i < assets.height; i++) {
-        size_t x = pos.x;
-        for (wchar_t ch : assets.chars.at(i))
-            mvwaddch(stdscr, y, x++, ch);
-        y++;
+        for (size_t j = 0; j < assets.width; j++) {
+            attron(COLOR_PAIR(int(assets.char_colors.at(i).at(j))));
+            mvaddnwstr(pos.y + i, pos.x + j, &assets.chars.at(i).at(j), 1);
+            attron(COLOR_PAIR(int(ass::TermColor::White)));
+        }
     }
 }
 

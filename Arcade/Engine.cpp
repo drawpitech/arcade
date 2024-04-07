@@ -8,9 +8,11 @@
 #include "Engine.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <thread>
 #include <utility>
 
 #include "SharedObject.hpp"
@@ -59,7 +61,20 @@ void gg::Engine::draw_text(
 
 void gg::Engine::wait_frame(u_int8_t fps)
 {
-    // TODO
+    std::time_t last_frame = _last_frame;
+    std::time_t now = std::time(nullptr);
+    _last_frame = now;
+
+    if (fps == 0)
+        return;
+
+    double target = 1 / double(fps);
+    long diff = now - _last_frame;
+    long to_wait = long(target * 1000) - diff;
+
+    if (to_wait <= 0)
+        return;
+    std::this_thread::sleep_for(std::chrono::milliseconds(to_wait));
 }
 
 void gg::Engine::clear_sprites()

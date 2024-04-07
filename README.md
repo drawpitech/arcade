@@ -24,8 +24,26 @@ On *nix systems, you can compile the project using the following commands:
 ```sh
 cmake -S . -B build
 cmake --build build
-./build/arcade
+./arcade lib/arcade_ncurses.so
 ```
 *All shared objects are built in lib/*
 
-Or if you have `nix`, just use `nix run`.
+Or if you have `nix`, just use `nix build`.
+
+
+## Interface Sharing
+
+We needed to share our graphical and game library interfaces with at least one
+other project group. After turn-in, it will therefore be possible to run your
+games using their launcher and graphical libraries, and vice-versa.
+
+We shared the **ASS** (Arcade Standard Specification) library.
+
+Our team:
+- Clément (*clement.boillot@epitech.eu*)
+- Baptiste (*baptiste.girardeau@epitech.eu*)
+- Jules (*jules.fradin@epitech.eu*)
+Other team:
+- Célian (*celian.lombardot@epitech.eu*)
+- Jacques (*jacques.ratier@epitech.eu*)
+- Théophile (*theophile.combes@epitech.eu*)
