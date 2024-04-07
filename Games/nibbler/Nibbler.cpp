@@ -25,8 +25,10 @@ Nibbler::Nibbler()
 
 Nibbler::~Nibbler() = default;
 
-ass::RunStatus Nibbler::run(ass::IEngine &engine)
+std::pair<ass::RunStatus, size_t> Nibbler::run(ass::IEngine &engine)
 {
+    size_t score = 0;
+
     Player snake{engine};
     Fruit fruit{engine};
     Map map{engine};
@@ -38,11 +40,11 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
                 continue;
             switch (event.key) {
                 case ass::EventKey::KeyQ:
-                    return ass::RunStatus::Exit;
+                    return {ass::RunStatus::Exit, score};
                 case ass::EventKey::KeyR:
-                    return ass::RunStatus::Restart;
+                    return {ass::RunStatus::Restart, score};
                 case ass::EventKey::KeyM:
-                    return ass::RunStatus::ShowMenu;
+                    return {ass::RunStatus::ShowMenu, score};
                 case ass::EventKey::KeyN:
                     engine.next_renderer();
                     break;
@@ -70,7 +72,7 @@ ass::RunStatus Nibbler::run(ass::IEngine &engine)
 
         // Check if the player is dead
         if (snake.is_dead(engine))
-            return ass::RunStatus::Exit;
+            return {ass::RunStatus::Exit, score};
 
         // Redraw screen
         engine.clear(ass::TermColor::Black);
