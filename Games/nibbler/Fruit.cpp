@@ -10,7 +10,7 @@
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
 
-#include "Snake.hpp"
+#include "Nibbler.hpp"
 
 Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
 {
@@ -22,23 +22,14 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
                 .chars = {{'x'}},
                 .char_colors = {{ass::xterm_color_t(ass::TermColor::Red)}},
             },
-        .path = "assets/snake/fruit.png",
+        .path = "assets/nibbler/fruit.png",
     });
-    move(engine);
+    _sprite->move({9, 8});
 }
 
 void Fruit::move(pos_t pos)
 {
     _sprite->move(pos);
-}
-
-void Fruit::move(ass::IEngine &engine)
-{
-    auto [width, height] = engine.get_renderer().get_window_size();
-    move({
-        static_cast<float>(rand() % width),
-        static_cast<float>(rand() % height),
-    });
 }
 
 pos_t Fruit::position()

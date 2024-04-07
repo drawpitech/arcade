@@ -5,7 +5,7 @@
 ** Snake
 */
 
-#include "Snake.hpp"
+#include "Nibbler.hpp"
 
 #include <ASS/Events.hpp>
 #include <ASS/IGame.hpp>
@@ -15,28 +15,23 @@
 
 extern "C" std::unique_ptr<ass::IGame> uwu_goofy_ahhh_game_entrypoint()
 {
-    return std::make_unique<Snake>();
+    return std::make_unique<Nibbler>();
 }
 
-Snake::Snake()
+Nibbler::Nibbler()
 {
     std::srand(std::time(nullptr));
 }
 
-Snake::~Snake() = default;
+Nibbler::~Nibbler() = default;
 
-ass::RunStatus Snake::run(ass::IEngine &engine)
+ass::RunStatus Nibbler::run(ass::IEngine &engine)
 {
     Player snake{engine};
     Fruit fruit{engine};
+    Map map{engine};
 
     while (true) {
-        // Avoid that the fruit can disapear
-        const auto &fruit_pos = fruit.position();
-        const auto &[w, h] = engine.get_renderer().get_window_size();
-        if (fruit_pos.x >= w || fruit_pos.y >= h)
-            fruit.move(engine);
-
         // Move the snake
         for (auto &event : engine.events()) {
             if (event.state != ass::EventState::KeyPressed)
@@ -52,26 +47,26 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
                     engine.next_renderer();
                     break;
                 case ass::EventKey::KeyUp:
-                    snake.set_direction(Direction::Up);
+                    snake.set_direction(Direction::Up, map);
                     break;
                 case ass::EventKey::KeyDown:
-                    snake.set_direction(Direction::Down);
+                    snake.set_direction(Direction::Down, map);
                     break;
                 case ass::EventKey::KeyLeft:
-                    snake.set_direction(Direction::Left);
+                    snake.set_direction(Direction::Left, map);
                     break;
                 case ass::EventKey::KeyRight:
-                    snake.set_direction(Direction::Right);
+                    snake.set_direction(Direction::Right, map);
                     break;
                 case ass::EventKey::KeySpace:
                     for (size_t i = 0; i < 3; i++)
-                        snake.move(engine, fruit);
+                        snake.move(fruit, map);
                     break;
                 default:
                     break;
             }
         }
-        snake.move(engine, fruit);
+        snake.move(fruit, map);
 
         // Check if the player is dead
         if (snake.is_dead(engine))
@@ -81,7 +76,8 @@ ass::RunStatus Snake::run(ass::IEngine &engine)
         engine.clear(ass::TermColor::Black);
         fruit.draw(engine);
         snake.draw(engine);
+        map.draw(engine);
         engine.refresh();
-        engine.wait_frame(10 + snake.get_size() / 4);
+        engine.wait_frame(7 + snake.get_size() / 4);
     }
 }
