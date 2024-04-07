@@ -31,7 +31,7 @@ namespace ass {
 /**
  * @interface IRenderer
  * @brief Renderer Interface
- * @details Set of method to implement for the Renderer part of the Arcade project
+ * @details Set of method to implement for the Renderer part of the Arcade project. Most of these mthods should only be called from the Engine
  * @ingroup renderer
  * @exception IRenderer::Exception Renderer’s exceptions
  */
@@ -87,6 +87,15 @@ public:
      * @return array of Event
      */
     virtual std::vector<Event> events() = 0;
+
+    /**
+     * @brief draw text to the screen
+     * @param[in] pos the position of the text
+     * @param[in] text text to display
+     * @param[in] size font size
+     * @param[in] color color of the text
+     */
+    virtual void draw_text(Vector2<float> pos, std::string text, uint size, TermColor color) = 0;
 
     IRenderer(const IRenderer &) = default;
     IRenderer(IRenderer &&) = delete;

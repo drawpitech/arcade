@@ -15,7 +15,7 @@
 
 namespace ass {
 /**
- * @brief Event Key enumeration
+ * @brief Event Key enumeration, any other key should be ignored
  */
 enum class EventKey: u_int8_t {
     KeyA,
@@ -56,7 +56,7 @@ enum class EventKey: u_int8_t {
 };
 
 /**
- * @brief Event Key enumeration
+ * @brief Event State enumeration, either released or pressed.
  */
 enum class EventState: int8_t  {
     KeyReleased, ///< State for Key release
@@ -64,7 +64,7 @@ enum class EventState: int8_t  {
 };
 
 /**
- * @brief Event Container
+ * @brief Event Container. This contains an eventkey (key) and a state
  */
 struct Event {
     /// Key of the Event
