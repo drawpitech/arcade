@@ -34,6 +34,8 @@ int gg::Arcade::run() const
     gg::Engine engine;
     engine.set_renderer(_args.getRenderer());
 
+    auto username = gg::Menu::get_username(engine);
+
     std::unique_ptr<gg::SharedObject> game = nullptr;
     gg::Menu::show(engine, game);
     auto game_instance = game->get<ass::IGame>();
