@@ -149,20 +149,23 @@ void SDL2::free_sprite(void *&raw_data)
 }
 
 void SDL2::draw_text(
-    ass::Vector2<float> pos, std::string tex, uint size, ass::TermColor color)
+    ass::Vector2<float> pos, std::string str, uint size, ass::TermColor color)
 {
     if (TTF_WasInit() == 0)
         throw std::runtime_error("TTF wasn't loaded in SDL2");
 
     TTF_Font *font = TTF_OpenFont("assets/Comic Sans MS 400.ttf", size);
-    SDL_Surface *text_surface =
-        TTF_RenderText_Solid(font, tex.c_str(), COLORS.at(color));
-    SDL_Texture *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
+    auto *text_surface = TTF_RenderText_Solid(font, str.c_str(), COLORS.at(color));
+    auto *text = SDL_CreateTextureFromSurface(_renderer, text_surface);
+
     int text_width = text_surface->w;
     int text_height = text_surface->h;
-    SDL_FreeSurface(text_surface);
     SDL_Rect render_quad = {
         int(pos.x) * 32, int(pos.y) * 32, text_width, text_height};
+
     SDL_RenderCopy(_renderer, text, nullptr, &render_quad);
+
+    TTF_CloseFont(font);
     SDL_DestroyTexture(text);
+    SDL_FreeSurface(text_surface);
 }
