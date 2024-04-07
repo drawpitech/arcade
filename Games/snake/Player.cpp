@@ -9,6 +9,7 @@
 #include <ASS/IGame.hpp>
 #include <ASS/ISprite.hpp>
 #include <ASS/Vector2.hpp>
+#include <cmath>
 #include <vector>
 
 #include "Snake.hpp"
@@ -22,22 +23,27 @@ Player::Player(ass::IEngine &engine)
                 .height = 1,
                 .width = 1,
                 .chars = {{'o'}},
+                .char_colors = {{ass::xterm_color_t(ass::TermColor::White)}},
             },
         .path = "./Games/snake/assets/snake.png",
     });
 
-    grow();
+    const auto [w, h] = engine.get_renderer().get_window_size();
+    for (size_t i = 0; i < 4; i++)
+        _body.push_back({
+            std::round(static_cast<float>(w) / 2) - i,
+            std::round(static_cast<float>(h) / 2),
+        });
 }
 
 void Player::grow()
 {
-    if (_body.size() == 0)
-        _body.push_back({0, 0});
-    else
-        _body.push_back(_body.back());
+    if (_body.empty())
+        throw std::runtime_error("Snake has no body *sad noises*");
+    _body.push_back(_body.back());
 }
 
-void Player::move()
+void Player::move(ass::IEngine &engine, Fruit &fruit)
 {
     // Move the tail
     for (size_t i = _body.size() - 1; i > 0; i--)
@@ -68,6 +74,13 @@ void Player::move()
             head.x -= 1;
             break;
     }
+
+    // The snake touches the fruit
+    auto fruit_pos = fruit.position();
+    if (head.x == fruit_pos.x && head.y == fruit_pos.y) {
+        fruit.move(get_tail());
+        grow();
+    }
 }
 
 bool Player::is_dead(ass::IEngine &engine)
@@ -75,7 +88,7 @@ bool Player::is_dead(ass::IEngine &engine)
     auto head = get_head();
 
     // Touches the tail
-    for (size_t i = 1; i < _body.size(); i++)
+    for (size_t i = 2; i < _body.size(); i++)
         if (head.x == _body.at(i).x && head.y == _body.at(i).y)
             return true;
 
@@ -94,10 +107,20 @@ pos_t &Player::get_head()
     return _body.at(0);
 }
 
+pos_t &Player::get_tail()
+{
+    return _body.at(_body.size() - 1);
+}
+
 void Player::draw(ass::IEngine &engine)
 {
     for (auto &part : _body) {
         _sprite->move({part.x, part.y});
         engine.draw_sprite(*_sprite);
     }
+}
+
+size_t Player::get_size() const
+{
+    return _body.size();
 }

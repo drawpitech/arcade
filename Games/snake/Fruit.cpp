@@ -20,16 +20,22 @@ Fruit::Fruit(ass::IEngine &engine) : _sprite(engine.create_sprite())
                 .height = 1,
                 .width = 1,
                 .chars = {{'x'}},
+                .char_colors = {{ass::xterm_color_t(ass::TermColor::Red)}},
             },
         .path = "./Games/snake/assets/fruit.png",
     });
     move(engine);
 }
 
+void Fruit::move(pos_t pos)
+{
+    _sprite->move(pos);
+}
+
 void Fruit::move(ass::IEngine &engine)
 {
     auto [width, height] = engine.get_renderer().get_window_size();
-    _sprite->move({
+    move({
         static_cast<float>(rand() % width),
         static_cast<float>(rand() % height),
     });

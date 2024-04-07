@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <ASS/IEngine.hpp>
 #include <ASS/ISprite.hpp>
 #include <map>
@@ -57,6 +58,7 @@ class Engine : public ass::IEngine
     std::unique_ptr<ass::IRenderer> _renderer;
     std::map<ass::ISprite *, void *> _sprites;
     std::unique_ptr<gg::SharedObject> _renderer_so;
+    std::time_t _last_frame;
 
     static void open_shared_object(
         const std::string &path,
